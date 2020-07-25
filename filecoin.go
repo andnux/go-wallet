@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
-	"github.com/filecoin-project/go-address"
-	"github.com/filecoin-project/go-crypto"
+	"github.com/andnux/go-wallet/address"
+	"github.com/andnux/go-wallet/crypto"
 	"strconv"
 	"strings"
 )
