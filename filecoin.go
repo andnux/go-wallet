@@ -13,26 +13,31 @@ import (
 )
 
 type FileCoinWallet struct {
+	Test bool
 }
 
 func (wallet *FileCoinWallet) Name() string {
 	return "FIL"
 }
 
-func (wallet *FileCoinWallet) Broadcast(data []byte) string {
-	return ""
-}
-
 func (wallet *FileCoinWallet) Signature(data []byte, privateKey string) []byte {
-	return []byte{}
+	keyHex, err := hex.DecodeString(privateKey)
+	if err != nil {
+		fmt.Println(err)
+	}
+	sign, err := crypto.Sign(keyHex, data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return sign
 }
 
 func (wallet *FileCoinWallet) Generate(test bool) string {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	return wallet.GenerateByMnemonic(mnemonic, "m/44'/461'/0'/0/0", test)
+	return wallet.GenerateByMnemonic(mnemonic, "m/44'/461'/0'/0/0")
 }
-func (wallet *FileCoinWallet) GenerateByPrivateKey(privateKey string, test bool) string {
+func (wallet *FileCoinWallet) GenerateByPrivateKey(privateKey string) string {
 	keyHex, err := hex.DecodeString(privateKey)
 	if err != nil {
 		fmt.Println(err)
@@ -42,10 +47,16 @@ func (wallet *FileCoinWallet) GenerateByPrivateKey(privateKey string, test bool)
 	if err != nil {
 		fmt.Println(err)
 	}
+	var network address.Network
+	if wallet.Test {
+		network = address.Testnet
+	} else {
+		network = address.Mainnet
+	}
 	a := Account{
 		PrivateKey: privateKey,
 		PublicKey:  hex.EncodeToString(publicKey),
-		Address:    k1Address.String()}
+		Address:    k1Address.String(network)}
 	res, err := json.Marshal(a)
 	if err != nil {
 		fmt.Println(err)
@@ -53,7 +64,7 @@ func (wallet *FileCoinWallet) GenerateByPrivateKey(privateKey string, test bool)
 	return string(res)
 }
 
-func (wallet *FileCoinWallet) GenerateByMnemonic(mnemonic string, path string, test bool) string {
+func (wallet *FileCoinWallet) GenerateByMnemonic(mnemonic string, path string) string {
 	s := strings.Split(path, "/")
 	parseUint, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-1], "'", ""), 0, 1)
 	if err != nil {
@@ -80,11 +91,17 @@ func (wallet *FileCoinWallet) GenerateByMnemonic(mnemonic string, path string, t
 	if err != nil {
 		fmt.Println(err)
 	}
+	var network address.Network
+	if wallet.Test {
+		network = address.Testnet
+	} else {
+		network = address.Mainnet
+	}
 	a := Account{
 		PrivateKey: hex.EncodeToString(key),
 		PublicKey:  hex.EncodeToString(publicKey),
 		Mnemonic:   mnemonic,
-		Address:    k1Address.String()}
+		Address:    k1Address.String(network)}
 	res, err := json.Marshal(a)
 	if err != nil {
 		fmt.Println(err)

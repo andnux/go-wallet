@@ -86,8 +86,8 @@ func (a Address) Bytes() []byte {
 }
 
 // String returns an address encoded as a string.
-func (a Address) String() string {
-	str, err := encode(Testnet, a)
+func (a Address) String(network Network) string {
+	str, err := encode(network, a)
 	if err != nil {
 		panic(err) // I don't know if this one is okay
 	}
@@ -126,7 +126,7 @@ func (a *Address) UnmarshalJSON(b []byte) error {
 
 // MarshalJSON implements the json marshal interface.
 func (a Address) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + a.String() + `"`), nil
+	return []byte(`"` + a.String(Mainnet) + `"`), nil
 }
 
 func (a *Address) Scan(value interface{}) error {

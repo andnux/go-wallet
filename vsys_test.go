@@ -8,7 +8,7 @@ import (
 )
 
 func TestVsysGenerate(t *testing.T) {
-	wallet := VsysWallet{}
+	wallet := InitVsysWallet(false)
 	account := wallet.Generate(false)
 	//{"private_key":"5KQNYR9UDPeALTNGqYxmyzDNJeiqEyHbUrpwT5tC5Wgg",
 	//"public_key":"F5saYo9gDHuqXBRbkpWB1pgdj3HWR3SXaLCD7hYMhUem",
@@ -19,7 +19,7 @@ func TestVsysGenerate(t *testing.T) {
 }
 
 func TestVsysGenerateByPrivateKey(t *testing.T) {
-	wallet := VsysWallet{}
+	wallet := InitVsysWallet(false)
 	privateKey := "5KQNYR9UDPeALTNGqYxmyzDNJeiqEyHbUrpwT5tC5Wgg"
 	account := wallet.GenerateByPrivateKey(privateKey, false)
 	fmt.Println(account)
@@ -33,7 +33,7 @@ func TestVsysGenerateByPrivateKey(t *testing.T) {
 }
 
 func TestVsysGenerateByMnemonic(t *testing.T) {
-	wallet := VsysWallet{}
+	wallet := InitVsysWallet(false)
 	mnemonic := "clog lady equip lens ensure ladder lava diamond report kick rabbit cook"
 	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/360'/0'/0/0", false)
 	fmt.Println(account)

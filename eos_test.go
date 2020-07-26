@@ -8,8 +8,8 @@ import (
 )
 
 func TestEosGenerate(t *testing.T) {
-	wallet := EosWallet{}
-	account := wallet.Generate(false)
+	wallet := InitBtcWallet(false)
+	account := wallet.Generate()
 	//{"private_key":"5KDfdGiWXXTxb2QHVAZp4vMXTsbiNP39HrBtiz8rY9Ag3LnFoUM",
 	//"public_key":"EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k",
 	//"address":"",
@@ -19,9 +19,9 @@ func TestEosGenerate(t *testing.T) {
 }
 
 func TestEosGenerateByPrivateKey(t *testing.T) {
-	wallet := EosWallet{}
+	wallet := InitBtcWallet(false)
 	privateKey := "5KDfdGiWXXTxb2QHVAZp4vMXTsbiNP39HrBtiz8rY9Ag3LnFoUM"
-	account := wallet.GenerateByPrivateKey(privateKey, false)
+	account := wallet.GenerateByPrivateKey(privateKey)
 	fmt.Println(account)
 	publicKey := "EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k"
 	var a Account
@@ -33,9 +33,9 @@ func TestEosGenerateByPrivateKey(t *testing.T) {
 }
 
 func TestEosGenerateByMnemonic(t *testing.T) {
-	wallet := EosWallet{}
+	wallet := InitBtcWallet(false)
 	mnemonic := "soccer abuse buyer upset calm pass extra camp visa man economy elephant"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0", false)
+	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0")
 	fmt.Println(account)
 	publicKey := "EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k"
 	var a Account

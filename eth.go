@@ -13,26 +13,31 @@ import (
 )
 
 type EthWallet struct {
+	Test bool
 }
 
 func (wallet *EthWallet) Name() string {
 	return "Eth"
 }
 
-func (wallet *EthWallet) Broadcast(data []byte) string {
-	return ""
-}
-
 func (wallet *EthWallet) Signature(data []byte, privateKey string) []byte {
-	return []byte{}
+	key, err := crypto.HexToECDSA(privateKey)
+	if err != nil {
+		fmt.Println(err)
+	}
+	sig, err := crypto.Sign(data, key)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return sig
 }
 
-func (wallet *EthWallet) Generate(test bool) string {
+func (wallet *EthWallet) Generate() string {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	return wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0", test)
+	return wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0")
 }
-func (wallet *EthWallet) GenerateByPrivateKey(keyHex string, test bool) string {
+func (wallet *EthWallet) GenerateByPrivateKey(keyHex string) string {
 	privateKey, err := crypto.HexToECDSA(keyHex)
 	if err != nil {
 		fmt.Println(err)
@@ -52,7 +57,7 @@ func (wallet *EthWallet) GenerateByPrivateKey(keyHex string, test bool) string {
 	return string(bytes)
 }
 
-func (wallet *EthWallet) GenerateByMnemonic(mnemonic string, path string, test bool) string {
+func (wallet *EthWallet) GenerateByMnemonic(mnemonic string, path string) string {
 	s := strings.Split(path, "/")
 	address, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-1], "'", ""), 0, 1)
 	if err != nil {

@@ -11,44 +11,28 @@ import (
 )
 
 type VsysWallet struct {
+	Test bool
 }
 
 func (wallet *VsysWallet) Name() string {
 	return "VSYS"
 }
 
-func (wallet *VsysWallet) Broadcast(data []byte) string {
-	return ""
-}
-
 func (wallet *VsysWallet) Signature(data []byte, privateKey string) []byte {
-	return []byte{}
+	var account *vsys.Account
+	if wallet.Test {
+		account = vsys.InitAccount(vsys.Testnet)
+	} else {
+		account = vsys.InitAccount(vsys.Mainnet)
+	}
+	account.BuildFromPrivateKey(privateKey)
+	return []byte(account.SignData(data))
 }
 
 func (wallet *VsysWallet) Generate(test bool) string {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	key, err := bip44.NewKeyFromMnemonic(mnemonic, 0x80000168, 0, 0, 0)
-	if err != nil {
-		fmt.Println(err)
-	}
-	var account *vsys.Account
-	if test {
-		account = vsys.InitAccount(vsys.Testnet)
-	} else {
-		account = vsys.InitAccount(vsys.Mainnet)
-	}
-	account.BuildFromSeed(string(key.Key), 0)
-	publicKey := account.PublicKey()
-	a := Account{PrivateKey: account.PrivateKey(),
-		PublicKey: publicKey,
-		Mnemonic:  mnemonic,
-		Address:   account.Address()}
-	bytes, err := json.Marshal(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return string(bytes)
+	return wallet.GenerateByMnemonic(mnemonic, "m/44'/360'/0'/0/0", test)
 }
 func (wallet *VsysWallet) GenerateByPrivateKey(privateKey string, test bool) string {
 	var account *vsys.Account

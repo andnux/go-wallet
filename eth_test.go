@@ -8,8 +8,8 @@ import (
 )
 
 func TestEthGenerate(t *testing.T) {
-	wallet := EthWallet{}
-	account := wallet.Generate(false)
+	wallet := InitEthWallet(false)
+	account := wallet.Generate()
 	//{"private_key":"a6b8d4da2f530cbb023c17dffd8629a1eb6efa438c355ded93350e3114e560cf",
 	//"public_key":"027b6fa83246908856e4c5a2956b4860d3baef2b7950deb86487e5d0f758f4b9f4",
 	//"address":"0x794efafb6e19b9465befe4082db599fa73ed9cad",
@@ -19,9 +19,9 @@ func TestEthGenerate(t *testing.T) {
 }
 
 func TestEthGenerateByPrivateKey(t *testing.T) {
-	wallet := EthWallet{}
+	wallet := InitEthWallet(false)
 	privateKey := "a6b8d4da2f530cbb023c17dffd8629a1eb6efa438c355ded93350e3114e560cf"
-	account := wallet.GenerateByPrivateKey(privateKey, false)
+	account := wallet.GenerateByPrivateKey(privateKey)
 	fmt.Println(account)
 	var a Account
 	err := json.Unmarshal([]byte(account), &a)
@@ -33,9 +33,9 @@ func TestEthGenerateByPrivateKey(t *testing.T) {
 }
 
 func TestEthGenerateByMnemonic(t *testing.T) {
-	wallet := EthWallet{}
+	wallet := InitEthWallet(false)
 	mnemonic := "admit blossom boring smoke chicken category narrow fuel deliver butter weekend vanish"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0", false)
+	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0")
 	fmt.Println(account)
 	var a Account
 	err := json.Unmarshal([]byte(account), &a)

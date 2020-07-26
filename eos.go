@@ -11,21 +11,26 @@ import (
 )
 
 type EosWallet struct {
+	Test bool
 }
 
 func (wallet *EosWallet) Name() string {
 	return "EOS"
 }
 
-func (wallet *EosWallet) Broadcast(data []byte) string {
-	return ""
-}
-
 func (wallet *EosWallet) Signature(data []byte, privateKey string) []byte {
-	return []byte{}
+	key, err := ecc.NewPrivateKey(privateKey)
+	if err != nil {
+		fmt.Println(err)
+	}
+	out, err := key.Sign(data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return out.Content
 }
 
-func (wallet *EosWallet) Generate(test bool) string {
+func (wallet *EosWallet) Generate() string {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
 	key, err := bip44.NewKeyFromMnemonic(mnemonic, 0x80000019, 0, 0, 0)
@@ -46,7 +51,7 @@ func (wallet *EosWallet) Generate(test bool) string {
 	}
 	return string(bytes)
 }
-func (wallet *EosWallet) GenerateByPrivateKey(privateKey string, test bool) string {
+func (wallet *EosWallet) GenerateByPrivateKey(privateKey string) string {
 	key, err := ecc.NewPrivateKey(privateKey)
 	if err != nil {
 		fmt.Println(err)
@@ -60,7 +65,7 @@ func (wallet *EosWallet) GenerateByPrivateKey(privateKey string, test bool) stri
 	return string(bytes)
 }
 
-func (wallet *EosWallet) GenerateByMnemonic(mnemonic string, path string, test bool) string {
+func (wallet *EosWallet) GenerateByMnemonic(mnemonic string, path string) string {
 	s := strings.Split(path, "/")
 	address, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-1], "'", ""), 0, 1)
 	if err != nil {
