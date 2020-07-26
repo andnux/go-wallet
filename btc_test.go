@@ -10,21 +10,21 @@ import (
 func TestBtcGenerate(t *testing.T) {
 	wallet := InitBtcWallet(false)
 	account := wallet.Generate()
-	//{"private_key":"0x4845353de4fc654e9abc45c2c79b360470f882231a1e117f600da2ce11660930",
-	//"public_key":"0x04f0089738bcb6073dd5ec30cee040ae5460e42de95a4c14e7bf01fde72fe86e1e13726b317a5ddc202c9be8157659b9e4903885c49aada90f526d5dfe635e2ca3",
-	//"address":"178x1Un8tJebjw1F7YrrzNiVa6quHqKxVd",
-	//"mnemonic":"when anger shock gain armed bird cup virus kite hybrid mix citizen",
+	//{"private_key":"5JzHoCgTjJjhrNUwZbAfPtQCWPZrJJCRcxX2h9gTUBSFaB6D4ZQ",
+	//"public_key":"04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4",
+	//"address":"1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk",
+	//"mnemonic":"nose ski weekend heavy ozone spring limit salon ask bread lift window",
 	//"keystore":""}
 	fmt.Println(account)
 }
 
 func TestBtcGenerateByPrivateKey(t *testing.T) {
 	wallet := InitBtcWallet(false)
-	privateKey := "0x4845353de4fc654e9abc45c2c79b360470f882231a1e117f600da2ce11660930"
+	privateKey := "5JzHoCgTjJjhrNUwZbAfPtQCWPZrJJCRcxX2h9gTUBSFaB6D4ZQ"
 	account := wallet.GenerateByPrivateKey(privateKey)
 	fmt.Println(account)
-	publicKey := "0x04f0089738bcb6073dd5ec30cee040ae5460e42de95a4c14e7bf01fde72fe86e1e13726b317a5ddc202c9be8157659b9e4903885c49aada90f526d5dfe635e2ca3"
-	address := "178x1Un8tJebjw1F7YrrzNiVa6quHqKxVd"
+	publicKey := "04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4"
+	address := "1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk"
 	var a Account
 	err := json.Unmarshal([]byte(account), &a)
 	if err != nil {
@@ -36,11 +36,11 @@ func TestBtcGenerateByPrivateKey(t *testing.T) {
 
 func TestBtcGenerateByMnemonic(t *testing.T) {
 	wallet := InitBtcWallet(false)
-	mnemonic := "when anger shock gain armed bird cup virus kite hybrid mix citizen"
+	mnemonic := "nose ski weekend heavy ozone spring limit salon ask bread lift window"
 	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0")
 	fmt.Println(account)
-	publicKey := "0x04f0089738bcb6073dd5ec30cee040ae5460e42de95a4c14e7bf01fde72fe86e1e13726b317a5ddc202c9be8157659b9e4903885c49aada90f526d5dfe635e2ca3"
-	address := "178x1Un8tJebjw1F7YrrzNiVa6quHqKxVd"
+	publicKey := "04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4"
+	address := "1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk"
 	var a Account
 	err := json.Unmarshal([]byte(account), &a)
 	if err != nil {

@@ -1,13 +1,14 @@
 package go_wallet
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil"
-	"github.com/eoscanada/eos-go/btcsuite/btcd/btcec"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"strconv"
 	"strings"
@@ -40,26 +41,26 @@ func (wallet *BtcWallet) Generate() string {
 	return wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0")
 }
 func (wallet *BtcWallet) GenerateByPrivateKey(privateKey string) string {
-	keybyte, err := hexutil.Decode(privateKey)
-	if err != nil {
-		fmt.Println(err)
-	}
-	puk, pub := btcec.PrivKeyFromBytes(btcec.S256(), keybyte)
-	hash160 := btcutil.Hash160(pub.SerializeUncompressed())
 	var params chaincfg.Params
 	if wallet.Test {
 		params = chaincfg.TestNet3Params
 	} else {
 		params = chaincfg.MainNetParams
 	}
+	wif, err := btcutil.DecodeWIF(privateKey)
+	if err != nil {
+		fmt.Println(err)
+	}
+	pubKey := wif.SerializePubKey()
+	hash160 := btcutil.Hash160(pubKey)
+
 	addressPubKey, err := btcutil.NewAddressPubKeyHash(hash160, &params)
 	if err != nil {
 		fmt.Println(err)
 	}
 	a := addressPubKey.EncodeAddress()
-	publicKey := hexutil.Encode(pub.SerializeUncompressed())
-	acc := Account{PrivateKey: hexutil.Encode(puk.Serialize()),
-		PublicKey: publicKey,
+	acc := Account{PrivateKey: wif.String(),
+		PublicKey: hex.EncodeToString(pubKey),
 		Address:   a}
 	bytes, err := json.Marshal(acc)
 	if err != nil {
@@ -87,7 +88,8 @@ func (wallet *BtcWallet) GenerateByMnemonic(mnemonic string, path string) string
 		fmt.Println(err)
 	}
 	puk, pub := btcec.PrivKeyFromBytes(btcec.S256(), keyMnemonic.Key)
-	hash160 := btcutil.Hash160(pub.SerializeUncompressed())
+	publicKey := pub.SerializeUncompressed()
+	hash160 := btcutil.Hash160(publicKey)
 	var params chaincfg.Params
 	if wallet.Test {
 		params = chaincfg.TestNet3Params
@@ -99,9 +101,12 @@ func (wallet *BtcWallet) GenerateByMnemonic(mnemonic string, path string) string
 		fmt.Println(err)
 	}
 	a := addressPubKey.EncodeAddress()
-	publicKey := hexutil.Encode(pub.SerializeUncompressed())
-	acc := Account{PrivateKey: hexutil.Encode(puk.Serialize()),
-		PublicKey: publicKey,
+	wif, err := btcutil.NewWIF(puk, &params, false)
+	if err != nil {
+		fmt.Println(err)
+	}
+	acc := Account{PrivateKey: wif.String(),
+		PublicKey: hex.EncodeToString(publicKey),
 		Mnemonic:  mnemonic,
 		Address:   a}
 	bytes, err := json.Marshal(acc)

@@ -1,5 +1,7 @@
 package go_wallet
 
+import "bytes"
+
 type Account struct {
 	PrivateKey string `json:"private_key"`
 	PublicKey  string `json:"public_key"`
@@ -26,6 +28,20 @@ func InitEthWallet(test bool) *EthWallet {
 
 func InitBtcWallet(test bool) *BtcWallet {
 	return &BtcWallet{Test: test}
+}
+
+func InitTronWallet(test bool) *TronWallet {
+	return &TronWallet{Test: test}
+}
+
+func bytesCombine(pBytes ...[]byte) []byte {
+	length := len(pBytes)
+	s := make([][]byte, length)
+	for index := 0; index < length; index++ {
+		s[index] = pBytes[index]
+	}
+	sep := []byte("")
+	return bytes.Join(s, sep)
 }
 
 //type Broadcast interface {

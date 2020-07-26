@@ -20,7 +20,7 @@ func TestVsysGenerate(t *testing.T) {
 
 func TestVsysGenerateByPrivateKey(t *testing.T) {
 	wallet := InitVsysWallet(false)
-	privateKey := "5KQNYR9UDPeALTNGqYxmyzDNJeiqEyHbUrpwT5tC5Wgg"
+	privateKey := "BonAQEAFE4eJgFnkp1wzpxDiMrym5cU2rJy9Wkji849U"
 	account := wallet.GenerateByPrivateKey(privateKey, false)
 	fmt.Println(account)
 	var a Account
