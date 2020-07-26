@@ -32,7 +32,7 @@ func (wallet *FileCoinWallet) Signature(data []byte, privateKey string) []byte {
 	return sign
 }
 
-func (wallet *FileCoinWallet) Generate(test bool) string {
+func (wallet *FileCoinWallet) Generate() string {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
 	return wallet.GenerateByMnemonic(mnemonic, "m/44'/461'/0'/0/0")
