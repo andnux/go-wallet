@@ -8,7 +8,8 @@ require (
 	github.com/FactomProject/go-bip32 v0.3.5 // indirect
 	github.com/FactomProject/go-bip39 v0.3.5
 	github.com/FactomProject/go-bip44 v0.0.0-20190306062959-b541a96d8da9
-	github.com/btcsuite/btcd v0.0.0-20190824003749-130ea5bddde3 // indirect
+	github.com/btcsuite/btcd v0.0.0-20190824003749-130ea5bddde3
+	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/eoscanada/eos-go v0.9.0
 	github.com/ethereum/go-ethereum v1.9.17
