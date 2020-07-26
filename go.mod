@@ -13,7 +13,6 @@ require (
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/eoscanada/eos-go v0.9.0
 	github.com/ethereum/go-ethereum v1.9.17
-	github.com/filecoin-project/go-address v0.0.1
 	github.com/filecoin-project/go-crypto v0.0.0-20191218222705-effae4ea9f03
 	github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f // indirect
 	github.com/ipfs/go-cid v0.0.5 // indirect
