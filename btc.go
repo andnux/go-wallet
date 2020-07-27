@@ -145,7 +145,7 @@ func (wallet *BtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.privateKey = &s
 	wallet.mnemonic = &mnemonic
 	hash160 := btcutil.Hash160(publicKey)
-	addressPubKey, err := btcutil.NewAddressPubKeyHash(hash160, &params)
+	addressPubKey, err := btcutil.NewAddressPubKey(hash160, &params)
 	if err != nil {
 		fmt.Println(err)
 	}
