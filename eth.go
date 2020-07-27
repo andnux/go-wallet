@@ -2,26 +2,32 @@ package go_wallet
 
 import (
 	"encoding/hex"
-	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
-	"strconv"
-	"strings"
 )
 
 type EthWallet struct {
-	Test bool
+	Test       bool
+	privateKey *string
+	publicKey  *string
+	mnemonic   *string
+	keystore   *string
+	address    *string
 }
 
 func (wallet *EthWallet) Name() string {
 	return "Eth"
 }
 
-func (wallet *EthWallet) Signature(data []byte, privateKey string) []byte {
-	key, err := crypto.HexToECDSA(privateKey)
+func (wallet *EthWallet) Sign(data []byte) (signed []byte, err error) {
+	privateKey := wallet.privateKey
+	if privateKey == nil {
+		return signed, errors.New("请先导入私钥")
+	}
+	key, err := crypto.HexToECDSA(*privateKey)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -29,67 +35,112 @@ func (wallet *EthWallet) Signature(data []byte, privateKey string) []byte {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return sig
+	return sig, nil
 }
 
-func (wallet *EthWallet) Generate() string {
+func (wallet *EthWallet) BuildFromRandomGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	return wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0")
-}
-func (wallet *EthWallet) GenerateByPrivateKey(keyHex string) string {
-	privateKey, err := crypto.HexToECDSA(keyHex)
-	if err != nil {
-		fmt.Println(err)
-	}
-	compressPubkey := secp256k1.CompressPubkey(privateKey.PublicKey.X,
-		privateKey.PublicKey.Y)
-	address := hex.EncodeToString(crypto.PubkeyToAddress(
-		privateKey.PublicKey).Bytes())
-	a := Account{
-		PrivateKey: keyHex,
-		PublicKey:  hex.EncodeToString(compressPubkey),
-		Address:    "0x" + address}
-	bytes, err := json.Marshal(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return string(bytes)
+	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
 }
 
-func (wallet *EthWallet) GenerateByMnemonic(mnemonic string, path string) string {
-	s := strings.Split(path, "/")
-	address, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-1], "'", ""), 0, 1)
+func (wallet *EthWallet) GetPrivateKey() string {
+	key := wallet.privateKey
+	if key == nil {
+		return ""
+	}
+	return *key
+}
+
+func (wallet *EthWallet) BuildFromPrivateKey(privateKey string) {
+	pk, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	chain, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-2], "'", ""), 0, 1)
+	publicKey := crypto.CompressPubkey(&pk.PublicKey)
+	wallet.privateKey = &privateKey
+	puk := hex.EncodeToString(publicKey)
+	wallet.publicKey = &puk
+	addr := "0x" + hex.EncodeToString(crypto.PubkeyToAddress(pk.PublicKey).Bytes())
+	wallet.address = &addr
+}
+
+func (wallet *EthWallet) BuildFromPublicKey(publicKey string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.mnemonic = nil
+	wallet.publicKey = &publicKey
+	bytes, err := hex.DecodeString(publicKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	account, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-3], "'", ""), 0, 1)
+	pubkey, err := crypto.DecompressPubkey(bytes)
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyFromMnemonic, err := bip44.NewKeyFromMnemonic(mnemonic, 0x8000003c, uint32(account), uint32(chain), uint32(address))
+	addr := "0x" + hex.EncodeToString(crypto.PubkeyToAddress(*pubkey).Bytes())
+	wallet.address = &addr
+}
+
+func (wallet *EthWallet) GetPublicKey() string {
+	key := wallet.publicKey
+	if key == nil {
+		return ""
+	}
+	return *key
+}
+
+func (wallet *EthWallet) BuildFromMnemonic(mnemonic string) {
+	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
+}
+
+func (wallet *EthWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.keystore = nil
+	wallet.mnemonic = nil
+	wallet.address = nil
+	parser, err := bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}
-	keyHex := hex.EncodeToString(keyFromMnemonic.Key)
+	key, err := bip44.NewKeyFromMnemonic(mnemonic,
+		parser.CoinType, parser.Account,
+		parser.Change, parser.AddressIndex)
+	if err != nil {
+		fmt.Println(err)
+	}
+	keyHex := hex.EncodeToString(key.Key)
 	privateKey, err := crypto.HexToECDSA(keyHex)
 	if err != nil {
 		fmt.Println(err)
 	}
 	publicKey := crypto.CompressPubkey(&privateKey.PublicKey)
-	a := Account{
-		PrivateKey: keyHex,
-		PublicKey:  hex.EncodeToString(publicKey),
-		Mnemonic:   mnemonic,
-		Address: "0x" + hex.EncodeToString(
-			crypto.PubkeyToAddress(privateKey.PublicKey).Bytes())}
-	bytes, err := json.Marshal(a)
-	if err != nil {
-		fmt.Println(err)
+	wallet.mnemonic = &mnemonic
+	wallet.privateKey = &keyHex
+	puk := hex.EncodeToString(publicKey)
+	wallet.publicKey = &puk
+	addr := "0x" + hex.EncodeToString(crypto.PubkeyToAddress(privateKey.PublicKey).Bytes())
+	wallet.address = &addr
+}
+
+func (wallet *EthWallet) GetMnemonic() string {
+	if wallet.mnemonic == nil {
+		return ""
 	}
-	return string(bytes)
+	return *wallet.mnemonic
+}
+
+func (wallet *EthWallet) BuildFromAddress(address string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.mnemonic = nil
+	wallet.address = &address
+}
+
+func (wallet *EthWallet) GetAddress() string {
+	if wallet.address == nil {
+		return ""
+	}
+	return *wallet.address
 }

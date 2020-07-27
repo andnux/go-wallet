@@ -1,47 +1,62 @@
 package go_wallet
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestEthGenerate(t *testing.T) {
-	wallet := InitEthWallet(false)
-	account := wallet.Generate()
-	//{"private_key":"a6b8d4da2f530cbb023c17dffd8629a1eb6efa438c355ded93350e3114e560cf",
-	//"public_key":"027b6fa83246908856e4c5a2956b4860d3baef2b7950deb86487e5d0f758f4b9f4",
-	//"address":"0x794efafb6e19b9465befe4082db599fa73ed9cad",
-	//"mnemonic":"admit blossom boring smoke chicken category narrow fuel deliver butter weekend vanish",
-	//"keystore":""}
-	fmt.Println(account)
+func TestEthWallet_BuildFromRandomGenerate(t *testing.T) {
+	wallet := EthWallet{}
+	wallet.Test = false
+	wallet.BuildFromRandomGenerate()
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//inflict problem pipe senior security volcano cloth doll goose elephant provide expect
+	//633b3d6ee8c02366a6fccbff8af9d0d4a0cd27130b8565baaa9311bd76a33ea4
+	//0316c71e2943e5ed34be6ac2064a2396a1a28373bf6b694899d4a1ae0f2c951557
+	//0xae550c1e3017daf94a66cb7668699c7ee450d9bf
 }
 
-func TestEthGenerateByPrivateKey(t *testing.T) {
-	wallet := InitEthWallet(false)
-	privateKey := "a6b8d4da2f530cbb023c17dffd8629a1eb6efa438c355ded93350e3114e560cf"
-	account := wallet.GenerateByPrivateKey(privateKey)
-	fmt.Println(account)
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, "027b6fa83246908856e4c5a2956b4860d3baef2b7950deb86487e5d0f758f4b9f4", a.PublicKey)
-	assert.Equal(t, "0x794efafb6e19b9465befe4082db599fa73ed9cad", a.Address)
+func TestEthCoinWallet_GetPrivateKey(t *testing.T) {
+	wallet := EthWallet{}
+	wallet.Test = false
+	wallet.BuildFromPrivateKey("633b3d6ee8c02366a6fccbff8af9d0d4a0cd27130b8565baaa9311bd76a33ea4")
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//
+	//633b3d6ee8c02366a6fccbff8af9d0d4a0cd27130b8565baaa9311bd76a33ea4
+	//0316c71e2943e5ed34be6ac2064a2396a1a28373bf6b694899d4a1ae0f2c951557
+	//0xae550c1e3017daf94a66cb7668699c7ee450d9bf
 }
 
-func TestEthGenerateByMnemonic(t *testing.T) {
-	wallet := InitEthWallet(false)
-	mnemonic := "admit blossom boring smoke chicken category narrow fuel deliver butter weekend vanish"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/60'/0'/0/0")
-	fmt.Println(account)
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, "027b6fa83246908856e4c5a2956b4860d3baef2b7950deb86487e5d0f758f4b9f4", a.PublicKey)
-	assert.Equal(t, "0x794efafb6e19b9465befe4082db599fa73ed9cad", a.Address)
+func TestEthWallet_BuildFromMnemonic(t *testing.T) {
+	wallet := EthWallet{}
+	wallet.Test = false
+	wallet.BuildFromMnemonic("inflict problem pipe senior security volcano cloth doll goose elephant provide expect")
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//inflict problem pipe senior security volcano cloth doll goose elephant provide expect
+	//633b3d6ee8c02366a6fccbff8af9d0d4a0cd27130b8565baaa9311bd76a33ea4
+	//0316c71e2943e5ed34be6ac2064a2396a1a28373bf6b694899d4a1ae0f2c951557
+	//0xae550c1e3017daf94a66cb7668699c7ee450d9bf
+}
+
+func TestEthWallet_BuildFromPublicKey(t *testing.T) {
+	wallet := EthWallet{}
+	wallet.Test = false
+	wallet.BuildFromPublicKey("0316c71e2943e5ed34be6ac2064a2396a1a28373bf6b694899d4a1ae0f2c951557")
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//
+	//
+	//0316c71e2943e5ed34be6ac2064a2396a1a28373bf6b694899d4a1ae0f2c951557
+	//0xae550c1e3017daf94a66cb7668699c7ee450d9bf
 }

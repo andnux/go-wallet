@@ -1,47 +1,47 @@
 package go_wallet
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestEosGenerate(t *testing.T) {
-	wallet := InitEosWallet(false)
-	account := wallet.Generate()
-	//{"private_key":"5KDfdGiWXXTxb2QHVAZp4vMXTsbiNP39HrBtiz8rY9Ag3LnFoUM",
-	//"public_key":"EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k",
-	//"address":"",
-	//"mnemonic":"soccer abuse buyer upset calm pass extra camp visa man economy elephant",
-	//"keystore":""}
-	fmt.Println(account)
+func TestEosWallet_BuildFromRandomGenerate(t *testing.T) {
+	wallet := EosWallet{}
+	wallet.BuildFromRandomGenerate()
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	//topple defense shell defense firm waste help update glove betray actual tower
+	//5JUM8rj8ktgwmsDym6b2Qcj2SpCUdcXd5wGNKskatD7ixjHCmRv
+	//EOS7CE42LYf6jYC6RrcWP76C3KRGGyHmmPvQ2Sj2VCJKATYfCyKcK
 }
 
-func TestEosGenerateByPrivateKey(t *testing.T) {
-	wallet := InitEosWallet(false)
-	privateKey := "5KDfdGiWXXTxb2QHVAZp4vMXTsbiNP39HrBtiz8rY9Ag3LnFoUM"
-	account := wallet.GenerateByPrivateKey(privateKey)
-	fmt.Println(account)
-	publicKey := "EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k"
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, publicKey, a.PublicKey)
+func TestEosWallet_BuildFromPrivateKey(t *testing.T) {
+	wallet := EosWallet{}
+	privateKey := "5JUM8rj8ktgwmsDym6b2Qcj2SpCUdcXd5wGNKskatD7ixjHCmRv"
+	wallet.BuildFromPrivateKey(privateKey)
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	//5JUM8rj8ktgwmsDym6b2Qcj2SpCUdcXd5wGNKskatD7ixjHCmRv
+	//EOS7CE42LYf6jYC6RrcWP76C3KRGGyHmmPvQ2Sj2VCJKATYfCyKcK
 }
 
-func TestEosGenerateByMnemonic(t *testing.T) {
-	wallet := InitEosWallet(false)
-	mnemonic := "soccer abuse buyer upset calm pass extra camp visa man economy elephant"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0")
-	fmt.Println(account)
-	publicKey := "EOS7KrBYdccTUYxExpJiXDp2YXMjMxJHepKade93gxhuHw5PTmx9k"
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, publicKey, a.PublicKey)
+func TestEosWallet_BuildFromPublicKey(t *testing.T) {
+	wallet := EosWallet{}
+	publicKey := "EOS7CE42LYf6jYC6RrcWP76C3KRGGyHmmPvQ2Sj2VCJKATYfCyKcK"
+	wallet.BuildFromPublicKey(publicKey)
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+}
+
+func TestEosWallet_BuildFromMnemonic(t *testing.T) {
+	wallet := EosWallet{}
+	mnemonic := "topple defense shell defense firm waste help update glove betray actual tower"
+	wallet.BuildFromMnemonic(mnemonic)
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	//topple defense shell defense firm waste help update glove betray actual tower
+	//5JUM8rj8ktgwmsDym6b2Qcj2SpCUdcXd5wGNKskatD7ixjHCmRv
+	//EOS7CE42LYf6jYC6RrcWP76C3KRGGyHmmPvQ2Sj2VCJKATYfCyKcK
 }

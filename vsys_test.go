@@ -1,47 +1,62 @@
 package go_wallet
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestVsysGenerate(t *testing.T) {
-	wallet := InitVsysWallet(false)
-	account := wallet.Generate(false)
-	//{"private_key":"5KQNYR9UDPeALTNGqYxmyzDNJeiqEyHbUrpwT5tC5Wgg",
-	//"public_key":"F5saYo9gDHuqXBRbkpWB1pgdj3HWR3SXaLCD7hYMhUem",
-	//"address":"ARHBWHd15nx7i9oGk91bMYgTas6Y6qtCTW2",
-	//"mnemonic":"clog lady equip lens ensure ladder lava diamond report kick rabbit cook",
-	//"keystore":""}
-	fmt.Println(account)
+func TestVsysWallet_BuildFromRandomGenerate(t *testing.T) {
+	wallet := VsysWallet{}
+	wallet.Test = false
+	wallet.BuildFromRandomGenerate()
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//inherit fiction obscure angry scale mouse fine tornado fitness before cricket parade
+	//AhSeFuxHydXkDV3Qp1F1onoPTsG6fFeLMsB9K7qBtjwM
+	//CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n
+	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }
 
-func TestVsysGenerateByPrivateKey(t *testing.T) {
-	wallet := InitVsysWallet(false)
-	privateKey := "BonAQEAFE4eJgFnkp1wzpxDiMrym5cU2rJy9Wkji849U"
-	account := wallet.GenerateByPrivateKey(privateKey, false)
-	fmt.Println(account)
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, "F5saYo9gDHuqXBRbkpWB1pgdj3HWR3SXaLCD7hYMhUem", a.PublicKey)
-	assert.Equal(t, "ARHBWHd15nx7i9oGk91bMYgTas6Y6qtCTW2", a.Address)
+func TestVsysWallet_BuildFromPrivateKey(t *testing.T) {
+	wallet := VsysWallet{}
+	wallet.Test = false
+	privateKey := "AhSeFuxHydXkDV3Qp1F1onoPTsG6fFeLMsB9K7qBtjwM"
+	wallet.BuildFromPrivateKey(privateKey)
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//AhSeFuxHydXkDV3Qp1F1onoPTsG6fFeLMsB9K7qBtjwM
+	//CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n
+	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }
 
-func TestVsysGenerateByMnemonic(t *testing.T) {
-	wallet := InitVsysWallet(false)
-	mnemonic := "clog lady equip lens ensure ladder lava diamond report kick rabbit cook"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/360'/0'/0/0", false)
-	fmt.Println(account)
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, "F5saYo9gDHuqXBRbkpWB1pgdj3HWR3SXaLCD7hYMhUem", a.PublicKey)
-	assert.Equal(t, "ARHBWHd15nx7i9oGk91bMYgTas6Y6qtCTW2", a.Address)
+func TestVsysWallet_BuildFromPublicKey(t *testing.T) {
+	wallet := VsysWallet{}
+	wallet.Test = false
+	publicKey := "CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n"
+	wallet.BuildFromPublicKey(publicKey)
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n
+	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
+}
+
+func TestVsysWallet_BuildFromMnemonic(t *testing.T) {
+	wallet := VsysWallet{}
+	wallet.Test = false
+	mnemonic := "inherit fiction obscure angry scale mouse fine tornado fitness before cricket parade"
+	wallet.BuildFromMnemonic(mnemonic)
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetAddress())
+	//inherit fiction obscure angry scale mouse fine tornado fitness before cricket parade
+	//AhSeFuxHydXkDV3Qp1F1onoPTsG6fFeLMsB9K7qBtjwM
+	//CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n
+	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }

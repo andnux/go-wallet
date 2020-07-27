@@ -2,100 +2,186 @@ package go_wallet
 
 import (
 	"encoding/hex"
-	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
-	"github.com/andnux/go-wallet/base58"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/eoscanada/eos-go/ecc"
-	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/btcsuite/btcutil/base58"
+	"github.com/ethereum/go-ethereum/crypto"
+	tron "github.com/sasaxie/go-client-api/common/crypto"
 	"golang.org/x/crypto/sha3"
-	"strconv"
-	"strings"
 )
 
 type TronWallet struct {
-	Test bool
+	Test       bool
+	privateKey *string
+	publicKey  *string
+	mnemonic   *string
+	keystore   *string
+	address    *string
 }
 
 func (wallet *TronWallet) Name() string {
 	return "Tron"
 }
 
-func (wallet *TronWallet) Signature(data []byte, privateKey string) []byte {
-	key, err := ecc.NewPrivateKey(privateKey)
+func (wallet *TronWallet) Sign(data []byte) (signed []byte, err error) {
+	privateKey := wallet.privateKey
+	if privateKey == nil {
+		return signed, errors.New("请先导入私钥")
+	}
+	pk, err := crypto.HexToECDSA(*privateKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	out, err := key.Sign(data)
+	sig, err := crypto.Sign(data, pk)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return out.Content
+	return sig, nil
 }
 
-func (wallet *TronWallet) Generate() string {
+func (wallet *TronWallet) BuildFromRandomGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	return wallet.GenerateByMnemonic(mnemonic, "m/44'/195'/0'/0/0")
-}
-func (wallet *TronWallet) GenerateByPrivateKey(privateKey string) string {
-	if !strings.HasPrefix(privateKey, "0x") {
-		privateKey = "0x" + privateKey
-	}
-	keybyte, err := hexutil.Decode(privateKey)
-	if err != nil {
-		panic(err)
-	}
-	puk, pub := btcec.PrivKeyFromBytes(btcec.S256(), keybyte)
-	serialize := pub.SerializeUncompressed()
-	acc := Account{PrivateKey: "0x" + hex.EncodeToString(puk.Serialize()),
-		PublicKey: "0x" + hex.EncodeToString(serialize),
-		Address:   getAddress(serialize)}
-	b, err := json.Marshal(acc)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return string(b)
+	wallet.BuildFromMnemonic(mnemonic)
 }
 
-func getAddress(puk []byte) string {
-	hash := sha3.NewLegacyKeccak256()
-	data := hash.Sum(puk)
-	combine := bytesCombine([]byte{byte(41)}, data)
-	init := combine[len(combine)-20 : len(combine)]
-	sum := hash.Sum(hash.Sum(init))[0:4]
-	data = base58.Encode(bytesCombine(init, sum))
-	return string(bytesCombine([]byte{'T'}, data))
+func (wallet *TronWallet) GetPrivateKey() string {
+	key := wallet.privateKey
+	if key == nil {
+		return ""
+	}
+	return *key
 }
 
-func (wallet *TronWallet) GenerateByMnemonic(mnemonic string, path string) string {
-	s := strings.Split(path, "/")
-	address, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-1], "'", ""), 0, 1)
+func (wallet *TronWallet) BuildFromPrivateKey(privateKey string) {
+	key, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	chain, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-2], "'", ""), 0, 1)
+	wallet.privateKey = &privateKey
+	bytes := crypto.CompressPubkey(&key.PublicKey)
+	hexPubKey := hex.EncodeToString(bytes)
+	wallet.publicKey = &hexPubKey
+	address := hex.EncodeToString(tron.PubkeyToAddress(key.PublicKey).Bytes())
+	wallet.address = &address
+}
+
+func (wallet *TronWallet) BuildFromPublicKey(publicKey string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.mnemonic = nil
+	puk, err := hex.DecodeString(publicKey)
 	if err != nil {
 		fmt.Println(err)
 	}
-	account, err := strconv.ParseUint(strings.ReplaceAll(s[len(s)-3], "'", ""), 0, 1)
+	key, err := crypto.DecompressPubkey(puk)
 	if err != nil {
 		fmt.Println(err)
 	}
-	key, err := bip44.NewKeyFromMnemonic(mnemonic, 0x800000c3, uint32(account), uint32(chain), uint32(address))
+	wallet.publicKey = &publicKey
+	address := hex.EncodeToString(tron.PubkeyToAddress(*key).Bytes())
+	wallet.address = &address
+}
+
+func (wallet *TronWallet) GetPublicKey() string {
+	key := wallet.publicKey
+	if key == nil {
+		return ""
+	}
+	return *key
+}
+
+func (wallet *TronWallet) BuildFromMnemonic(mnemonic string) {
+	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/195'/0'/0/0")
+}
+
+func (wallet *TronWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.keystore = nil
+	wallet.mnemonic = nil
+	wallet.address = nil
+	parser, err := bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}
-	puk := key.PublicKey().Key
-	acc := Account{PrivateKey: "0x" + hex.EncodeToString(key.Key),
-		PublicKey: "0x" + hex.EncodeToString(puk),
-		Address:   getAddress(puk),
-		Mnemonic:  mnemonic}
-	b, err := json.Marshal(acc)
+	key, err := bip44.NewKeyFromMnemonic(mnemonic,
+		parser.CoinType, parser.Account,
+		parser.Change, parser.AddressIndex)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return string(b)
+	keyHex := hex.EncodeToString(key.Key)
+	privateKey, err := crypto.HexToECDSA(keyHex)
+	if err != nil {
+		fmt.Println(err)
+	}
+	publicKey := crypto.CompressPubkey(&privateKey.PublicKey)
+	wallet.mnemonic = &mnemonic
+	wallet.privateKey = &keyHex
+	puk := hex.EncodeToString(publicKey)
+	wallet.publicKey = &puk
+	address := hex.EncodeToString(tron.PubkeyToAddress(privateKey.PublicKey).Bytes())
+	wallet.address = &address
+}
+
+func (wallet *TronWallet) GetMnemonic() string {
+	if wallet.mnemonic == nil {
+		return ""
+	}
+	return *wallet.mnemonic
+}
+
+func (wallet *TronWallet) BuildFromAddress(address string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.mnemonic = nil
+	wallet.address = &address
+}
+
+func (wallet *TronWallet) GetAddress() string {
+	if wallet.address == nil {
+		return ""
+	}
+	return *wallet.address
+}
+
+func (wallet *TronWallet) ConvertToTAddress() string {
+	if wallet.address == nil {
+		return ""
+	}
+	bytes, err := hex.DecodeString(*wallet.address)
+	if err != nil {
+		return ""
+	}
+	var sum []byte
+	hash := sha3.New256()
+	sum = hash.Sum(bytes)
+	digest := sha3.Sum256(sum)
+	data := bytesCombine(bytes, digest[0:4])
+	return base58.Encode(data)
+}
+
+func (wallet *TronWallet) ConvertTo4Address() string {
+	if wallet.address == nil {
+		return ""
+	}
+	bytes := base58.Decode(*wallet.address)
+	if len(bytes) < 4 {
+		return ""
+	}
+	var row = bytes[0 : len(bytes)-4]
+	var sum []byte
+	hash := sha3.New256()
+	sum = hash.Sum(row)
+	digest := sha3.Sum256(sum)
+	if digest[0] == bytes[len(row)+0] &&
+		digest[1] == bytes[len(row)+1] &&
+		digest[2] == bytes[len(row)+2] &&
+		digest[3] == bytes[len(row)+3] {
+		return hex.EncodeToString(row)
+	}
+	return ""
 }

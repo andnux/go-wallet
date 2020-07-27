@@ -12,7 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
-type BtcWallet struct {
+type OmniWallet struct {
 	Test       bool
 	privateKey *string
 	publicKey  *string
@@ -20,7 +20,7 @@ type BtcWallet struct {
 	address    *string
 }
 
-func (wallet *BtcWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *OmniWallet) Sign(data []byte) (signed []byte, err error) {
 	if wallet.privateKey == nil {
 		return signed, errors.New("请先导入私钥")
 	}
@@ -36,13 +36,13 @@ func (wallet *BtcWallet) Sign(data []byte) (signed []byte, err error) {
 	return signature.Serialize(), nil
 }
 
-func (wallet *BtcWallet) BuildFromRandomGenerate() {
+func (wallet *OmniWallet) BuildFromRandomGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
 	wallet.BuildFromMnemonic(mnemonic)
 }
 
-func (wallet *BtcWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *OmniWallet) BuildFromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -70,7 +70,7 @@ func (wallet *BtcWallet) BuildFromPrivateKey(privateKey string) {
 	wallet.address = &a
 }
 
-func (wallet *BtcWallet) GetPrivateKey() string {
+func (wallet *OmniWallet) GetPrivateKey() string {
 	key := wallet.privateKey
 	if key == nil {
 		return ""
@@ -78,7 +78,7 @@ func (wallet *BtcWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *BtcWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *OmniWallet) BuildFromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -102,18 +102,18 @@ func (wallet *BtcWallet) BuildFromPublicKey(publicKey string) {
 	wallet.address = &a
 }
 
-func (wallet *BtcWallet) GetPublicKey() string {
+func (wallet *OmniWallet) GetPublicKey() string {
 	key := wallet.publicKey
 	if key == nil {
 		return ""
 	}
 	return *key
 }
-func (wallet *BtcWallet) BuildFromMnemonic(mnemonic string) {
+func (wallet *OmniWallet) BuildFromMnemonic(mnemonic string) {
 	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
 }
 
-func (wallet *BtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *OmniWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -157,21 +157,21 @@ func (wallet *BtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.address = &a
 }
 
-func (wallet *BtcWallet) GetMnemonic() string {
+func (wallet *OmniWallet) GetMnemonic() string {
 	if wallet.mnemonic == nil {
 		return ""
 	}
 	return *wallet.mnemonic
 }
 
-func (wallet *BtcWallet) BuildFromAddress(address string) {
+func (wallet *OmniWallet) BuildFromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
 	wallet.address = &address
 }
 
-func (wallet *BtcWallet) GetAddress() string {
+func (wallet *OmniWallet) GetAddress() string {
 	if wallet.address == nil {
 		return ""
 	}

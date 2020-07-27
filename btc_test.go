@@ -1,51 +1,63 @@
 package go_wallet
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestBtcGenerate(t *testing.T) {
-	wallet := InitBtcWallet(false)
-	account := wallet.Generate()
-	//{"private_key":"5JzHoCgTjJjhrNUwZbAfPtQCWPZrJJCRcxX2h9gTUBSFaB6D4ZQ",
-	//"public_key":"04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4",
-	//"address":"1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk",
-	//"mnemonic":"nose ski weekend heavy ozone spring limit salon ask bread lift window",
-	//"keystore":""}
-	fmt.Println(account)
+func TestBtcWallet_BuildFromRandomGenerate(t *testing.T) {
+	wallet := BtcWallet{}
+	wallet.Test = false
+	wallet.BuildFromRandomGenerate()
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetAddress())
+	//5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt
+	//049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45
+	//undo dynamic dust become chat cage pool junk sphere next rent creek
+	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcGenerateByPrivateKey(t *testing.T) {
-	wallet := InitBtcWallet(false)
-	privateKey := "5JzHoCgTjJjhrNUwZbAfPtQCWPZrJJCRcxX2h9gTUBSFaB6D4ZQ"
-	account := wallet.GenerateByPrivateKey(privateKey)
-	fmt.Println(account)
-	publicKey := "04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4"
-	address := "1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk"
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, publicKey, a.PublicKey)
-	assert.Equal(t, address, a.Address)
+func TestBtcWallet_BuildFromPrivateKey(t *testing.T) {
+	wallet := BtcWallet{}
+	wallet.Test = false
+	wallet.BuildFromPrivateKey("5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt")
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetAddress())
+	//5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt
+	//049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45
+	//
+	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcGenerateByMnemonic(t *testing.T) {
-	wallet := InitBtcWallet(false)
-	mnemonic := "nose ski weekend heavy ozone spring limit salon ask bread lift window"
-	account := wallet.GenerateByMnemonic(mnemonic, "m/44'/0'/0'/0/0")
-	fmt.Println(account)
-	publicKey := "04a8e62453e8f6d3f29d39acc9ba64588d6ae836f3bedbbb8677696167d3654747e1abf4f7628b1a7f75d403f59c17d6d8df2c965320209fb8e82b5bbb227edfa4"
-	address := "1KkfsD58VqXKxmsuyvPe4dNCJC9DPjACHk"
-	var a Account
-	err := json.Unmarshal([]byte(account), &a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	assert.Equal(t, publicKey, a.PublicKey)
-	assert.Equal(t, address, a.Address)
+func TestBtcWallet_BuildFromMnemonic(t *testing.T) {
+	wallet := BtcWallet{}
+	wallet.Test = false
+	mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
+	wallet.BuildFromMnemonic(mnemonic)
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetAddress())
+	//5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt
+	//049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45
+	//undo dynamic dust become chat cage pool junk sphere next rent creek
+	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
+}
+
+func TestBtcWallet_BuildFromPublicKey(t *testing.T) {
+	wallet := BtcWallet{}
+	wallet.Test = false
+	wallet.BuildFromPublicKey("049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45")
+	fmt.Println(wallet.GetPrivateKey())
+	fmt.Println(wallet.GetPublicKey())
+	fmt.Println(wallet.GetMnemonic())
+	fmt.Println(wallet.GetAddress())
+	//
+	//049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45
+	//
+	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
