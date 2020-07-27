@@ -1,4 +1,17 @@
-#### BTC EOS ETH FileCoin OMNI TRON VSYS
+#### 1、Android SDK 使用
+```shell script
+gomobile bind -target android github.com/andnux/go-wallet
+```
+![android.png](imgs/android.png)
+#### 2、IOS SDK 使用
+```shell script
+gomobile bind -target ios github.com/andnux/go-wallet
+```
+#### 3、GO SDK 使用
+```shell script
+gomobile bind -target ios github.com/andnux/go-wallet
+```
+#### 4、目前支持： BTC EOS ETH FileCoin OMNI TRON VSYS
 1、随机生成账号
 ```go
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
@@ -58,4 +71,11 @@ fmt.Println(wallet.GetAddress())
 //undo dynamic dust become chat cage pool junk sphere next rent creek
 //1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 ```
-
+5、签名
+```go
+wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
+wallet.Test = false
+mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
+wallet.BuildFromMnemonicAndPath(mnemonic,"m/44'/200'/0'/0/0")
+signed:=wallet.Sign(data) //签名
+```
