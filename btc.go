@@ -110,7 +110,7 @@ func (wallet *BtcWallet) GetPublicKey() string {
 	return *key
 }
 func (wallet *BtcWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
+	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/0'/0'/0/0")
 }
 
 func (wallet *BtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
@@ -145,9 +145,9 @@ func (wallet *BtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.privateKey = &s
 	wallet.mnemonic = &mnemonic
 	hash160 := btcutil.Hash160(publicKey)
-	addressPubKey, err := btcutil.NewAddressPubKey(hash160, &params)
+	addressPubKey, err := btcutil.NewAddressPubKeyHash(hash160, &params)
 	if err != nil {
-		fmt.Println(err)
+		panic(errors.New(err.Error()))
 	}
 	a := addressPubKey.EncodeAddress()
 	hexPubKey := hex.EncodeToString(publicKey)
