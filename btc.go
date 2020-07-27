@@ -20,9 +20,9 @@ type BtcWallet struct {
 	address    *string
 }
 
-func (wallet *BtcWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *BtcWallet) Sign(data []byte) (signed []byte) {
 	if wallet.privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	key, err := hexutil.Decode(*wallet.privateKey)
 	if err != nil {
@@ -33,7 +33,7 @@ func (wallet *BtcWallet) Sign(data []byte) (signed []byte, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return signature.Serialize(), nil
+	return signature.Serialize()
 }
 
 func (wallet *BtcWallet) BuildFromRandomGenerate() {

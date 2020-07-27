@@ -1,7 +1,6 @@
 package go_wallet
 
 import (
-	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
@@ -15,15 +14,15 @@ type EosWallet struct {
 	mnemonic   *string
 }
 
-func (wallet *EosWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *EosWallet) Sign(data []byte) (signed []byte) {
 	if wallet.privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	out, err := wallet.privateKey.Sign(data)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return out.Content, nil
+	return out.Content
 }
 
 func (wallet *EosWallet) BuildFromRandomGenerate() {

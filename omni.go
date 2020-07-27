@@ -2,7 +2,6 @@ package go_wallet
 
 import (
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
@@ -20,9 +19,9 @@ type OmniWallet struct {
 	address    *string
 }
 
-func (wallet *OmniWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *OmniWallet) Sign(data []byte) (signed []byte) {
 	if wallet.privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	key, err := hexutil.Decode(*wallet.privateKey)
 	if err != nil {
@@ -33,7 +32,7 @@ func (wallet *OmniWallet) Sign(data []byte) (signed []byte, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return signature.Serialize(), nil
+	return signature.Serialize()
 }
 
 func (wallet *OmniWallet) BuildFromRandomGenerate() {

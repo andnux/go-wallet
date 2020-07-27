@@ -1,7 +1,6 @@
 package go_wallet
 
 import (
-	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
@@ -16,9 +15,9 @@ type VsysWallet struct {
 	address    *string
 }
 
-func (wallet *VsysWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *VsysWallet) Sign(data []byte) (signed []byte) {
 	if wallet.privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	var account *vsys.Account
 	if wallet.Test {
@@ -27,7 +26,7 @@ func (wallet *VsysWallet) Sign(data []byte) (signed []byte, err error) {
 		account = vsys.InitAccount(vsys.Mainnet)
 	}
 	account.BuildFromPrivateKey(*wallet.privateKey)
-	return []byte(account.SignData(data)), nil
+	return []byte(account.SignData(data))
 }
 
 func (wallet *VsysWallet) BuildFromRandomGenerate() {

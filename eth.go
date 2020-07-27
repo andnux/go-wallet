@@ -2,7 +2,6 @@ package go_wallet
 
 import (
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
@@ -22,10 +21,10 @@ func (wallet *EthWallet) Name() string {
 	return "Eth"
 }
 
-func (wallet *EthWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *EthWallet) Sign(data []byte) (signed []byte) {
 	privateKey := wallet.privateKey
 	if privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	key, err := crypto.HexToECDSA(*privateKey)
 	if err != nil {
@@ -35,7 +34,7 @@ func (wallet *EthWallet) Sign(data []byte) (signed []byte, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return sig, nil
+	return sig
 }
 
 func (wallet *EthWallet) BuildFromRandomGenerate() {

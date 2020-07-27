@@ -2,7 +2,6 @@ package go_wallet
 
 import (
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
@@ -18,10 +17,10 @@ type FileCoinWallet struct {
 	address    *string
 }
 
-func (wallet *FileCoinWallet) Sign(data []byte) (signed []byte, err error) {
+func (wallet *FileCoinWallet) Sign(data []byte) (signed []byte) {
 	privateKey := wallet.privateKey
 	if privateKey == nil {
-		return signed, errors.New("请先导入私钥")
+		return signed
 	}
 	keyHex, err := hex.DecodeString(*privateKey)
 	if err != nil {
@@ -31,7 +30,7 @@ func (wallet *FileCoinWallet) Sign(data []byte) (signed []byte, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return signed, nil
+	return signed
 }
 
 func (wallet *FileCoinWallet) BuildFromRandomGenerate() {

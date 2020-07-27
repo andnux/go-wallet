@@ -50,9 +50,9 @@ func bytesCombine(pBytes ...[]byte) []byte {
 	return bytes.Join(s, sep)
 }
 
-type Signature interface {
-	Sign(data []byte) (signed []byte, err error)
-}
+//type WalletSignature interface {
+//	Sign(data []byte) (signed []byte)
+//}
 
 type RandomGenerate interface {
 	BuildFromRandomGenerate()
