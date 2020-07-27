@@ -2,7 +2,7 @@
 ```shell script
 gomobile bind -target android github.com/andnux/go-wallet
 ```
-![android.png](imgs/android.png)
+![android.png](https://upload-images.jianshu.io/upload_images/3190592-25fd615c53e1052d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 2、IOS SDK 使用
 ```shell script
 gomobile bind -target ios github.com/andnux/go-wallet
