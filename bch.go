@@ -99,6 +99,7 @@ func (wallet *BchWallet) publicKeyToAddress(hexPublicKey string) string {
 		panic(err)
 	}
 	addr := pubKey.EncodeAddress()
+	//下面代码是转换成新地址bitcoincash:XXXXXXXXXX
 	a, err := address.NewFromString(addr)
 	if err != nil {
 		panic(err)
