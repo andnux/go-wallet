@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec // indirect
-	github.com/FactomProject/go-bip32 v0.3.5 // indirect
+	github.com/FactomProject/go-bip32 v0.3.5
 	github.com/FactomProject/go-bip39 v0.3.5
 	github.com/FactomProject/go-bip44 v0.0.0-20190306062959-b541a96d8da9
 	github.com/astaxie/beego v1.12.2 // indirect
@@ -23,6 +23,7 @@ require (
 	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
 	github.com/minio/sha256-simd v0.1.1 // indirect
 	github.com/multiformats/go-varint v0.0.5
+	github.com/nervosnetwork/ckb-sdk-go v0.1.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/sasaxie/go-client-api v0.0.0-20190820063117-f0587df4b72e

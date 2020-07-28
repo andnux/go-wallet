@@ -29,13 +29,28 @@ func bip44Parser(path string) (bip44 Bip44, err error) {
 		panic("path error")
 		return bip44, nil
 	}
-	bip44 = Bip44{
-		M:            strings.ReplaceAll(s[0], "'", ""),
-		Purpose:      strings.ReplaceAll(s[1], "'", ""),
-		CoinType:     stringToUint32(strings.ReplaceAll(s[2], "'", "")),
-		Account:      stringToUint32(strings.ReplaceAll(s[3], "'", "")),
-		Change:       stringToUint32(strings.ReplaceAll(s[4], "'", "")),
-		AddressIndex: stringToUint32(strings.ReplaceAll(s[5], "'", "")),
+	bip44 = Bip44{}
+	bip44.M = s[0]
+	bip44.Purpose = strings.ReplaceAll(s[1], "'", "")
+	if strings.Contains(s[2], "'") {
+		bip44.CoinType = stringToUint32(strings.ReplaceAll(s[2], "'", "")) | 0x80000000
+	} else {
+		bip44.CoinType = stringToUint32(strings.ReplaceAll(s[2], "'", ""))
+	}
+	if strings.Contains(s[3], "'") {
+		bip44.Account = stringToUint32(strings.ReplaceAll(s[3], "'", "")) | 0x80000000
+	} else {
+		bip44.Account = stringToUint32(strings.ReplaceAll(s[3], "'", ""))
+	}
+	if strings.Contains(s[4], "'") {
+		bip44.Change = stringToUint32(strings.ReplaceAll(s[4], "'", "")) | 0x80000000
+	} else {
+		bip44.Change = stringToUint32(strings.ReplaceAll(s[4], "'", ""))
+	}
+	if strings.Contains(s[5], "'") {
+		bip44.AddressIndex = stringToUint32(strings.ReplaceAll(s[5], "'", "")) | 0x80000000
+	} else {
+		bip44.AddressIndex = stringToUint32(strings.ReplaceAll(s[5], "'", ""))
 	}
 	return bip44, nil
 }
