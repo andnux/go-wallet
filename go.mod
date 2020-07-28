@@ -15,6 +15,8 @@ require (
 	github.com/eoscanada/eos-go v0.9.0
 	github.com/ethereum/go-ethereum v1.9.17
 	github.com/filecoin-project/go-crypto v0.0.0-20191218222705-effae4ea9f03
+	github.com/gcash/bchd v0.16.5
+	github.com/gcash/bchutil v0.0.0-20200229194731-128fc9884722
 	github.com/go-kit/kit v0.9.0 // indirect
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
@@ -30,6 +32,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
 	github.com/sasaxie/go-client-api v0.0.0-20190820063117-f0587df4b72e
+	github.com/schancel/cashaddr-converter v0.0.0-20181111022653-4769e7add95a
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
 	github.com/stretchr/testify v1.4.0
@@ -39,6 +42,7 @@ require (
 	github.com/warpfork/go-wish v0.0.0-20190328234359-8b3e70f8e830 // indirect
 	github.com/whyrusleeping/cbor-gen v0.0.0-20200414195334-429a0b5e922e
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/mobile v0.0.0-20200721161523-bcce01171201 // indirect
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543
 	google.golang.org/protobuf v1.24.0 // indirect
