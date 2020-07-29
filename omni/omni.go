@@ -36,13 +36,13 @@ func (wallet *OmniWallet) Sign(data []byte) (signed []byte) {
 	return signature.Serialize()
 }
 
-func (wallet *OmniWallet) BuildFromRandomGenerate() {
+func (wallet *OmniWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *OmniWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *OmniWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -78,7 +78,7 @@ func (wallet *OmniWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *OmniWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *OmniWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -109,11 +109,11 @@ func (wallet *OmniWallet) GetPublicKey() string {
 	}
 	return *key
 }
-func (wallet *OmniWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
+func (wallet *OmniWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
 }
 
-func (wallet *OmniWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *OmniWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -164,7 +164,7 @@ func (wallet *OmniWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *OmniWallet) BuildFromAddress(address string) {
+func (wallet *OmniWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

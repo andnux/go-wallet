@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestBtcWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestBtcWallet_FromGenerate(t *testing.T) {
 	wallet := BtcWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -19,10 +19,10 @@ func TestBtcWallet_BuildFromRandomGenerate(t *testing.T) {
 	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcWallet_BuildFromPrivateKey(t *testing.T) {
+func TestBtcWallet_FromPrivateKey(t *testing.T) {
 	wallet := BtcWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt")
+	wallet.FromPrivateKey("5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -33,11 +33,11 @@ func TestBtcWallet_BuildFromPrivateKey(t *testing.T) {
 	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcWallet_BuildFromMnemonic(t *testing.T) {
+func TestBtcWallet_FromMnemonic(t *testing.T) {
 	wallet := BtcWallet{}
 	wallet.Test = false
 	mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -48,11 +48,11 @@ func TestBtcWallet_BuildFromMnemonic(t *testing.T) {
 	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcWallet_BuildFromMnemonicAndPath(t *testing.T) {
+func TestBtcWallet_FromMnemonicAndPath(t *testing.T) {
 	wallet := BtcWallet{}
 	wallet.Test = false
 	mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/200'/0'/0/0")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -63,10 +63,10 @@ func TestBtcWallet_BuildFromMnemonicAndPath(t *testing.T) {
 	//1NFheqXgVf78vU1sMRXjdbiqyjtQMLF5Vz
 }
 
-func TestBtcWallet_BuildFromPublicKey(t *testing.T) {
+func TestBtcWallet_FromPublicKey(t *testing.T) {
 	wallet := BtcWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45")
+	wallet.FromPublicKey("049481269601b31efedd81eb59293558d7684ebaf129987a724e3ba692cfd8750ac6ea525f25f0dded594fa29f6041536deaaddb56d34f97b4ec1fd5f08e4d3d45")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())

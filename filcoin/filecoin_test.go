@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestFileCoinWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestFileCoinWallet_FromGenerate(t *testing.T) {
 	wallet := FileCoinWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -19,10 +19,10 @@ func TestFileCoinWallet_BuildFromRandomGenerate(t *testing.T) {
 	//f1w7bphex4rep5g6uw6cc5etq2jbfyusx7dqxfvny
 }
 
-func TestFileCoinWallet_BuildFromPrivateKey(t *testing.T) {
+func TestFileCoinWallet_FromPrivateKey(t *testing.T) {
 	wallet := FileCoinWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("c7d32f2f0d1b770ff183e56562cd839e9bceeb119ef8e7485e3b0e0de17078f7")
+	wallet.FromPrivateKey("c7d32f2f0d1b770ff183e56562cd839e9bceeb119ef8e7485e3b0e0de17078f7")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -33,10 +33,10 @@ func TestFileCoinWallet_BuildFromPrivateKey(t *testing.T) {
 	//f1w7bphex4rep5g6uw6cc5etq2jbfyusx7dqxfvny
 }
 
-func TestFileCoinWallet_BuildFromMnemonic(t *testing.T) {
+func TestFileCoinWallet_FromMnemonic(t *testing.T) {
 	wallet := FileCoinWallet{}
 	wallet.Test = false
-	wallet.BuildFromMnemonic("claw drill table grant off swamp spread amazing month aware write announce")
+	wallet.FromMnemonic("claw drill table grant off swamp spread amazing month aware write announce")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -50,7 +50,7 @@ func TestFileCoinWallet_BuildFromMnemonic(t *testing.T) {
 func TestFileCoinWallet_GetPublicKey(t *testing.T) {
 	wallet := FileCoinWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("04f83939f79e3f7be7c8e1e7032eb934b4902408bd48b9f6b0ccecfd0866a218cd957ffcc81aff483276874a96354200c31465fe3d595b8ca4f463f98c3b955c7c")
+	wallet.FromPublicKey("04f83939f79e3f7be7c8e1e7032eb934b4902408bd48b9f6b0ccecfd0866a218cd957ffcc81aff483276874a96354200c31465fe3d595b8ca4f463f98c3b955c7c")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())

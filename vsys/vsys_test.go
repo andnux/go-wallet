@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestVsysWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestVsysWallet_FromGenerate(t *testing.T) {
 	wallet := VsysWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -19,11 +19,11 @@ func TestVsysWallet_BuildFromRandomGenerate(t *testing.T) {
 	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }
 
-func TestVsysWallet_BuildFromPrivateKey(t *testing.T) {
+func TestVsysWallet_FromPrivateKey(t *testing.T) {
 	wallet := VsysWallet{}
 	wallet.Test = false
 	privateKey := "AhSeFuxHydXkDV3Qp1F1onoPTsG6fFeLMsB9K7qBtjwM"
-	wallet.BuildFromPrivateKey(privateKey)
+	wallet.FromPrivateKey(privateKey)
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -33,11 +33,11 @@ func TestVsysWallet_BuildFromPrivateKey(t *testing.T) {
 	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }
 
-func TestVsysWallet_BuildFromPublicKey(t *testing.T) {
+func TestVsysWallet_FromPublicKey(t *testing.T) {
 	wallet := VsysWallet{}
 	wallet.Test = false
 	publicKey := "CXwmA9bYf6AP53jp2jzRG5nCtV8QEPe6AwbbX9a2dM6n"
-	wallet.BuildFromPublicKey(publicKey)
+	wallet.FromPublicKey(publicKey)
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -46,11 +46,11 @@ func TestVsysWallet_BuildFromPublicKey(t *testing.T) {
 	//AR7EFpUF2bmztKLNPbEL8CT5HpahyiWwwo8
 }
 
-func TestVsysWallet_BuildFromMnemonic(t *testing.T) {
+func TestVsysWallet_FromMnemonic(t *testing.T) {
 	wallet := VsysWallet{}
 	wallet.Test = false
 	mnemonic := "inherit fiction obscure angry scale mouse fine tornado fitness before cricket parade"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())

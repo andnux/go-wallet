@@ -88,32 +88,32 @@ func BytesCombine(pBytes ...[]byte) []byte {
 //	Sign(data []byte) (signed []byte)
 //}
 
-type RandomGenerate interface {
-	BuildFromRandomGenerate()
+type Generate interface {
+	FromGenerate()
 }
 
 type Keystore interface {
-	BuildFromKeystore(keystore string, password string)
+	FromKeystore(keystore string, password string)
 	GetKeystore() string
 }
 
 type PrivateKey interface {
-	BuildFromPrivateKey(privateKey string)
+	FromPrivateKey(privateKey string)
 	GetPrivateKey() string
 }
 
 type PublicKey interface {
-	BuildFromPublicKey(publicKey string)
+	FromPublicKey(publicKey string)
 	GetPublicKey() string
 }
 
 type Address interface {
-	BuildFromAddress(address string)
+	FromAddress(address string)
 	GetAddress() string
 }
 
 type Mnemonic interface {
-	BuildFromMnemonicAndPath(mnemonic string, path string)
-	BuildFromMnemonic(mnemonic string)
+	FromMnemonicAndPath(mnemonic string, path string)
+	FromMnemonic(mnemonic string)
 	GetMnemonic() string
 }

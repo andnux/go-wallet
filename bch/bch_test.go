@@ -10,15 +10,15 @@ import (
 func TestBchWallet_Sign(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("123")
+	wallet.FromPrivateKey("123")
 	sign := wallet.Sign([]byte{1})
 	fmt.Println(hex.EncodeToString(sign))
 }
 
-func TestBchWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestBchWallet_FromGenerate(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -29,10 +29,10 @@ func TestBchWallet_BuildFromRandomGenerate(t *testing.T) {
 	//bitcoincash:qq5uxsetphm4h6e0w02s90epmm0htdkykcwwresn63
 }
 
-func TestBchWallet_BuildFromPrivateKey(t *testing.T) {
+func TestBchWallet_FromPrivateKey(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("L5dX2Tyxt7hfK9fpLDg269nPXArQRq9TE6fTtSqYQPE5Nr7imoGA")
+	wallet.FromPrivateKey("L5dX2Tyxt7hfK9fpLDg269nPXArQRq9TE6fTtSqYQPE5Nr7imoGA")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -40,11 +40,11 @@ func TestBchWallet_BuildFromPrivateKey(t *testing.T) {
 	assert.Equal(t, "bitcoincash:qq5uxsetphm4h6e0w02s90epmm0htdkykcwwresn63", wallet.GetAddress())
 }
 
-func TestBchWallet_BuildFromMnemonic(t *testing.T) {
+func TestBchWallet_FromMnemonic(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
 	mnemonic := "road orbit idea endorse margin exit solid injury super earn journey vanish"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -54,11 +54,11 @@ func TestBchWallet_BuildFromMnemonic(t *testing.T) {
 	assert.Equal(t, "bitcoincash:qq5uxsetphm4h6e0w02s90epmm0htdkykcwwresn63", wallet.GetAddress())
 }
 
-func TestBchWallet_BuildFromMnemonicAndPath(t *testing.T) {
+func TestBchWallet_FromMnemonicAndPath(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
 	mnemonic := "road orbit idea endorse margin exit solid injury super earn journey vanish"
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/145'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/145'/0'/0/0")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -68,10 +68,10 @@ func TestBchWallet_BuildFromMnemonicAndPath(t *testing.T) {
 	assert.Equal(t, "bitcoincash:qq5uxsetphm4h6e0w02s90epmm0htdkykcwwresn63", wallet.GetAddress())
 }
 
-func TestBchWallet_BuildFromPublicKey(t *testing.T) {
+func TestBchWallet_FromPublicKey(t *testing.T) {
 	wallet := BchWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("036802d3d4110a4b4cc0116daa486b92341182b9fa6cdd03022c83db42fb6ab9a5")
+	wallet.FromPublicKey("036802d3d4110a4b4cc0116daa486b92341182b9fa6cdd03022c83db42fb6ab9a5")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())

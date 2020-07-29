@@ -34,13 +34,13 @@ func (wallet *BnbWallet) Sign(data []byte) (signed []byte) {
 	return signed
 }
 
-func (wallet *BnbWallet) BuildFromRandomGenerate() {
+func (wallet *BnbWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *BnbWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *BnbWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = &privateKey
 	wallet.mnemonic = nil
@@ -60,7 +60,7 @@ func (wallet *BnbWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *BnbWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *BnbWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.address = nil
@@ -86,11 +86,11 @@ func (wallet *BnbWallet) GetPublicKey() string {
 	}
 	return *key
 }
-func (wallet *BnbWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/714'/0'/0/0")
+func (wallet *BnbWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/714'/0'/0/0")
 }
 
-func (wallet *BnbWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *BnbWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -128,7 +128,7 @@ func (wallet *BnbWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *BnbWallet) BuildFromAddress(address string) {
+func (wallet *BnbWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

@@ -1,14 +1,12 @@
 package xrp
 
 import (
-	"crypto/sha256"
 	"encoding/hex"
-	"errors"
-	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
 	"github.com/andnux/go-wallet"
-	"github.com/mr-tron/base58"
+	"github.com/minio/sha256-simd"
+	"github.com/rubblelabs/ripple/crypto"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -28,25 +26,42 @@ func (wallet *XrpWallet) Sign(data []byte) (signed []byte) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(bytes)
-	return []byte{}
-}
-
-func (wallet *XrpWallet) BuildFromRandomGenerate() {
-	entropy, _ := bip39.NewEntropy(128)
-	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
-}
-
-func (wallet *XrpWallet) BuildFromPrivateKey(hexKey string) {
-	wallet.publicKey = nil
-	wallet.privateKey = &hexKey
-	wallet.mnemonic = nil
-	bytes, err := hex.DecodeString(*wallet.privateKey)
+	ecdsaKey, err := crypto.NewECDSAKey(bytes)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(bytes)
+	sign, err := ecdsaKey.Sign(data)
+	if err != nil {
+		panic(err)
+	}
+	return sign.Serialize()
+}
+
+func (wallet *XrpWallet) FromGenerate() {
+	entropy, _ := bip39.NewEntropy(128)
+	mnemonic, _ := bip39.NewMnemonic(entropy)
+	wallet.FromMnemonic(mnemonic)
+}
+
+func (wallet *XrpWallet) FromPrivateKey(hexKey string) {
+	wallet.publicKey = nil
+	wallet.privateKey = nil
+	wallet.mnemonic = nil
+	bytes, err := hex.DecodeString(hexKey)
+	if err != nil {
+		panic(err)
+	}
+	ecdsaKey, err := crypto.NewECDSAKey(bytes)
+	if err != nil {
+		panic(err)
+	}
+	key := hex.EncodeToString(ecdsaKey.PrivateKey.Serialize())
+	wallet.privateKey = &key
+	pukWaw := ecdsaKey.PubKey().SerializeCompressed()
+	pubicKey := hex.EncodeToString(pukWaw)
+	wallet.publicKey = &pubicKey
+	addr := wallet.publicKeyToAddress(pubicKey)
+	wallet.address = &addr
 }
 
 func (wallet *XrpWallet) GetPrivateKey() string {
@@ -62,31 +77,22 @@ func (wallet *XrpWallet) publicKeyToAddress(hexPublicKey string) string {
 	if err != nil {
 		panic(err)
 	}
-	if len(bytes) != 33 {
-		panic(errors.New("Public Key Error"))
+	h := sha256.New()
+	h.Write(bytes)
+	sum := h.Sum(nil)
+	h2 := ripemd160.New()
+	h2.Write(sum)
+	res := h2.Sum(nil)
+	hash, err := crypto.NewAccountId(res)
+	if err != nil {
+		panic(err)
 	}
-	hash := sha256.New()
-	hash.Write(bytes)
-	sha256Hash := hash.Sum(nil)
-	h := ripemd160.New()
-	h.Write(sha256Hash)
-	ripemdHash := h.Sum(nil)
-	var payload = make([]byte, 0)
-	payload = append(payload, byte(0x00))
-	payload = append(payload, ripemdHash...)
-	hash.Reset()
-	hash.Write(payload)
-	hash1 := hash.Sum(nil)
-	hash.Reset()
-	hash.Write(hash1)
-	checksum := hash.Sum(nil)[0:4]
-	payload = append(payload, checksum...)
-	addr := base58.Encode(payload)
+	addr := hash.String()
 	wallet.address = &addr
 	return addr
 }
 
-func (wallet *XrpWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *XrpWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -102,11 +108,11 @@ func (wallet *XrpWallet) GetPublicKey() string {
 	}
 	return *key
 }
-func (wallet *XrpWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/145'/0'/0/0")
+func (wallet *XrpWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/144'/0'/0/0")
 }
 
-func (wallet *XrpWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *XrpWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -120,7 +126,13 @@ func (wallet *XrpWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(key.Key)
+	privateKey := hex.EncodeToString(key.Key)
+	pubicKey := hex.EncodeToString(key.PublicKey().Key)
+	wallet.publicKey = &pubicKey
+	wallet.privateKey = &privateKey
+	addr := wallet.publicKeyToAddress(pubicKey)
+	wallet.address = &addr
+	wallet.mnemonic = &mnemonic
 }
 
 func (wallet *XrpWallet) GetMnemonic() string {
@@ -130,7 +142,7 @@ func (wallet *XrpWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *XrpWallet) BuildFromAddress(address string) {
+func (wallet *XrpWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

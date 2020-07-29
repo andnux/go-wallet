@@ -10,22 +10,22 @@ import (
 func TestAtomWallet_Sign(t *testing.T) {
 	wallet := AtomWallet{}
 	key := "aff9378bdbf6aed3bea25780fa97c418d90164148515fc88b154b50c476dd8bd"
-	wallet.BuildFromPrivateKey(key)
+	wallet.FromPrivateKey(key)
 	signed := wallet.Sign([]byte("123123"))
 	s := hex.EncodeToString(signed)
 	fmt.Println(s)
 }
 
-func TestAtomWallet_BuildFromPublicKey(t *testing.T) {
+func TestAtomWallet_FromPublicKey(t *testing.T) {
 	wallet := AtomWallet{}
 	hexByte := "eb5ae9872102b359503f7d860242a87d9af308de49854f65c8dd85e12a34044e24357f16f597"
-	wallet.BuildFromPublicKey(hexByte)
+	wallet.FromPublicKey(hexByte)
 	assert.Equal(t, "cosmos1pysu03u65wjvrn77dvkwfzt94ew4eem893ye57", wallet.GetAddress())
 }
 
-func TestAtomWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestAtomWallet_FromGenerate(t *testing.T) {
 	wallet := AtomWallet{}
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -36,9 +36,9 @@ func TestAtomWallet_BuildFromRandomGenerate(t *testing.T) {
 	//cosmos1pysu03u65wjvrn77dvkwfzt94ew4eem893ye57
 }
 
-func TestAtomWallet_BuildFromMnemonic(t *testing.T) {
+func TestAtomWallet_FromMnemonic(t *testing.T) {
 	wallet := AtomWallet{}
-	wallet.BuildFromMnemonic("wave depend card please wage identify obey stadium hub blast engine win")
+	wallet.FromMnemonic("wave depend card please wage identify obey stadium hub blast engine win")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -48,9 +48,9 @@ func TestAtomWallet_BuildFromMnemonic(t *testing.T) {
 	assert.Equal(t, "cosmos1pysu03u65wjvrn77dvkwfzt94ew4eem893ye57", wallet.GetAddress())
 }
 
-func TestAtomWallet_BuildFromPrivateKey(t *testing.T) {
+func TestAtomWallet_FromPrivateKey(t *testing.T) {
 	wallet := AtomWallet{}
-	wallet.BuildFromPrivateKey("aff9378bdbf6aed3bea25780fa97c418d90164148515fc88b154b50c476dd8bd")
+	wallet.FromPrivateKey("aff9378bdbf6aed3bea25780fa97c418d90164148515fc88b154b50c476dd8bd")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
@@ -59,10 +59,10 @@ func TestAtomWallet_BuildFromPrivateKey(t *testing.T) {
 	assert.Equal(t, "cosmos1pysu03u65wjvrn77dvkwfzt94ew4eem893ye57", wallet.GetAddress())
 }
 
-func TestTemplateWallet_BuildFromMnemonicAndPath(t *testing.T) {
+func TestTemplateWallet_FromMnemonicAndPath(t *testing.T) {
 	wallet := AtomWallet{}
 	mnemonic := "wave depend card please wage identify obey stadium hub blast engine win"
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/118'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/118'/0'/0/0")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())

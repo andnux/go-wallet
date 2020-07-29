@@ -36,13 +36,13 @@ func (wallet *CkbWallet) Sign(data []byte) (signed []byte) {
 	return sign
 }
 
-func (wallet *CkbWallet) BuildFromRandomGenerate() {
+func (wallet *CkbWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *CkbWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *CkbWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -82,7 +82,7 @@ func (wallet *CkbWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *CkbWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *CkbWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -117,11 +117,11 @@ func (wallet *CkbWallet) GetPublicKey() string {
 	}
 	return *key
 }
-func (wallet *CkbWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/309'/0'/0/0")
+func (wallet *CkbWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/309'/0'/0/0")
 }
 
-func (wallet *CkbWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *CkbWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -174,7 +174,7 @@ func (wallet *CkbWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *CkbWallet) BuildFromAddress(address string) {
+func (wallet *CkbWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

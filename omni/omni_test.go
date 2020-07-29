@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-func TestOmniWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestOmniWallet_FromGenerate(t *testing.T) {
 	wallet := OmniWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -19,10 +19,10 @@ func TestOmniWallet_BuildFromRandomGenerate(t *testing.T) {
 	//16UzjrHxMCgFFYzwUmGM98uTY3rgwU6wE6
 }
 
-func TestOmniWallet_BuildFromPrivateKey(t *testing.T) {
+func TestOmniWallet_FromPrivateKey(t *testing.T) {
 	wallet := OmniWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("5JQZimWpQnL77kLnH5D57mzBtsjbN8KEJUAznmWpUZdaVnNTz52")
+	wallet.FromPrivateKey("5JQZimWpQnL77kLnH5D57mzBtsjbN8KEJUAznmWpUZdaVnNTz52")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -33,11 +33,11 @@ func TestOmniWallet_BuildFromPrivateKey(t *testing.T) {
 	//16UzjrHxMCgFFYzwUmGM98uTY3rgwU6wE6
 }
 
-func TestOmniWallet_BuildFromMnemonic(t *testing.T) {
+func TestOmniWallet_FromMnemonic(t *testing.T) {
 	wallet := OmniWallet{}
 	wallet.Test = false
 	mnemonic := "convince actor eyebrow marine all faculty meat draft viable scan bridge misery"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -48,10 +48,10 @@ func TestOmniWallet_BuildFromMnemonic(t *testing.T) {
 	//16UzjrHxMCgFFYzwUmGM98uTY3rgwU6wE6
 }
 
-func TestOmniWallet_BuildFromPublicKey(t *testing.T) {
+func TestOmniWallet_FromPublicKey(t *testing.T) {
 	wallet := OmniWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("0467b178cb985e77044bc33336116c6d79130b94e173fee4a7be1c1a8bb3c102ddd16436045d05260b1f3217269a688fa9c789fde27acbff3d8fba68a16199398e")
+	wallet.FromPublicKey("0467b178cb985e77044bc33336116c6d79130b94e173fee4a7be1c1a8bb3c102ddd16436045d05260b1f3217269a688fa9c789fde27acbff3d8fba68a16199398e")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())

@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func TestBnbWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestBnbWallet_FromGenerate(t *testing.T) {
 	wallet := BnbWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -20,10 +20,10 @@ func TestBnbWallet_BuildFromRandomGenerate(t *testing.T) {
 	//bnb15qfl6722ajyl9qhr8v3srt9m3rvlvud8mach8u
 }
 
-func TestBnbWallet_BuildFromPrivateKey(t *testing.T) {
+func TestBnbWallet_FromPrivateKey(t *testing.T) {
 	wallet := BnbWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("b26cbd62ee55220a372fe80fd7abc35611871e5812dd7becbb13a88372240d70")
+	wallet.FromPrivateKey("b26cbd62ee55220a372fe80fd7abc35611871e5812dd7becbb13a88372240d70")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -31,11 +31,11 @@ func TestBnbWallet_BuildFromPrivateKey(t *testing.T) {
 	assert.Equal(t, "bnb15qfl6722ajyl9qhr8v3srt9m3rvlvud8mach8u", wallet.GetAddress())
 }
 
-func TestBnbWallet_BuildFromMnemonic(t *testing.T) {
+func TestBnbWallet_FromMnemonic(t *testing.T) {
 	wallet := BnbWallet{}
 	wallet.Test = false
 	mnemonic := "notable gap make parrot tail deposit desert oxygen blanket crunch sense village"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -43,11 +43,11 @@ func TestBnbWallet_BuildFromMnemonic(t *testing.T) {
 	assert.Equal(t, "bnb1xuqxrwsvru64xfe7r220pjprqdhel6sujf6s93", wallet.GetAddress())
 }
 
-func TestBnbWallet_BuildFromMnemonicAndPath(t *testing.T) {
+func TestBnbWallet_FromMnemonicAndPath(t *testing.T) {
 	wallet := BnbWallet{}
 	wallet.Test = false
 	mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/714'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/714'/0'/0/0")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -58,10 +58,10 @@ func TestBnbWallet_BuildFromMnemonicAndPath(t *testing.T) {
 	//bnb13yltnnh68qp4pxa2x0mju7rvyy2vp7la889qch
 }
 
-func TestBnbWallet_BuildFromPublicKey(t *testing.T) {
+func TestBnbWallet_FromPublicKey(t *testing.T) {
 	wallet := BnbWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("eb5ae987210284332b2e15a66f0154383c2b9a8e4282ca6b2f55c8730cdf9b81a749a861a3ff")
+	wallet.FromPublicKey("eb5ae987210284332b2e15a66f0154383c2b9a8e4282ca6b2f55c8730cdf9b81a749a861a3ff")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())

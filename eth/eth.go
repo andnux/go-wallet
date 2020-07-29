@@ -38,10 +38,10 @@ func (wallet *EthWallet) Sign(data []byte) (signed []byte) {
 	return sig
 }
 
-func (wallet *EthWallet) BuildFromRandomGenerate() {
+func (wallet *EthWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
 }
 
 func (wallet *EthWallet) GetPrivateKey() string {
@@ -52,7 +52,7 @@ func (wallet *EthWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *EthWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *EthWallet) FromPrivateKey(privateKey string) {
 	pk, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
 		fmt.Println(err)
@@ -65,7 +65,7 @@ func (wallet *EthWallet) BuildFromPrivateKey(privateKey string) {
 	wallet.address = &addr
 }
 
-func (wallet *EthWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *EthWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -90,11 +90,11 @@ func (wallet *EthWallet) GetPublicKey() string {
 	return *key
 }
 
-func (wallet *EthWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
+func (wallet *EthWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/60'/0'/0/0")
 }
 
-func (wallet *EthWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *EthWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.keystore = nil
@@ -131,7 +131,7 @@ func (wallet *EthWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *EthWallet) BuildFromAddress(address string) {
+func (wallet *EthWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

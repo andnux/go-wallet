@@ -10,6 +10,7 @@ import (
 
 type EosWallet struct {
 	Test       bool
+	BaseUrl    string
 	privateKey *ecc.PrivateKey
 	publicKey  *ecc.PublicKey
 	mnemonic   *string
@@ -26,16 +27,16 @@ func (wallet *EosWallet) Sign(data []byte) (signed []byte) {
 	return out.Content
 }
 
-func (wallet *EosWallet) BuildFromRandomGenerate() {
+func (wallet *EosWallet) FromGenerate() {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *EosWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *EosWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -56,7 +57,7 @@ func (wallet *EosWallet) GetPrivateKey() string {
 	return key.String()
 }
 
-func (wallet *EosWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *EosWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -75,11 +76,11 @@ func (wallet *EosWallet) GetPublicKey() string {
 	return key.String()
 }
 
-func (wallet *EosWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/194'/0'/0/0")
+func (wallet *EosWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/194'/0'/0/0")
 }
 
-func (wallet *EosWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *EosWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

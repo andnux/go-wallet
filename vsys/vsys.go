@@ -30,13 +30,13 @@ func (wallet *VsysWallet) Sign(data []byte) (signed []byte) {
 	return []byte(account.SignData(data))
 }
 
-func (wallet *VsysWallet) BuildFromRandomGenerate() {
+func (wallet *VsysWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *VsysWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *VsysWallet) FromPrivateKey(privateKey string) {
 	var account *vsys.Account
 	if wallet.Test {
 		account = vsys.InitAccount(vsys.Testnet)
@@ -58,7 +58,7 @@ func (wallet *VsysWallet) GetPrivateKey() string {
 	}
 	return *key
 }
-func (wallet *VsysWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *VsysWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -80,15 +80,15 @@ func (wallet *VsysWallet) GetPublicKey() string {
 	return *key
 }
 
-func (wallet *VsysWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPathAndNonce(mnemonic, "m/44'/360'/0'/0/0", 0)
+func (wallet *VsysWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPathAndNonce(mnemonic, "m/44'/360'/0'/0/0", 0)
 }
 
-func (wallet *VsysWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
-	wallet.BuildFromMnemonicAndPathAndNonce(mnemonic, path, 0)
+func (wallet *VsysWallet) FromMnemonicAndPath(mnemonic string, path string) {
+	wallet.FromMnemonicAndPathAndNonce(mnemonic, path, 0)
 }
 
-func (wallet *VsysWallet) BuildFromMnemonicAndPathAndNonce(mnemonic string, path string, nonce int) {
+func (wallet *VsysWallet) FromMnemonicAndPathAndNonce(mnemonic string, path string, nonce int) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -125,7 +125,7 @@ func (wallet *VsysWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *VsysWallet) BuildFromAddress(address string) {
+func (wallet *VsysWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

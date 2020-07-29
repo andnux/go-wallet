@@ -33,6 +33,7 @@ require (
 	github.com/nervosnetwork/ckb-sdk-go v0.1.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/polydawn/refmt v0.0.0-20190809202753-05966cbd336a
+	github.com/rubblelabs/ripple v0.0.0-20200627211644-1ecb0c494a6a
 	github.com/sasaxie/go-client-api v0.0.0-20190820063117-f0587df4b72e
 	github.com/schancel/cashaddr-converter v0.0.0-20181111022653-4769e7add95a
 	github.com/smartystreets/assertions v1.0.1 // indirect

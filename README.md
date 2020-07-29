@@ -16,7 +16,7 @@ gomobile bind -target ios github.com/andnux/go-wallet
 ```go
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
 wallet.Test = false
-wallet.BuildFromRandomGenerate()
+wallet.FromGenerate()
 fmt.Println(wallet.GetPrivateKey())
 fmt.Println(wallet.GetPublicKey())
 fmt.Println(wallet.GetMnemonic())
@@ -31,7 +31,7 @@ fmt.Println(wallet.GetAddress())
 ```go
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
 wallet.Test = false
-wallet.BuildFromPrivateKey("5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt")
+wallet.FromPrivateKey("5JDawoh8AdLvhUZ7P7yT2qRsMtGoma7kFWgNTcELy48mCEirCPt")
 fmt.Println(wallet.GetPrivateKey())
 fmt.Println(wallet.GetPublicKey())
 fmt.Println(wallet.GetMnemonic())
@@ -46,7 +46,7 @@ fmt.Println(wallet.GetAddress())
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
 wallet.Test = false
 mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-wallet.BuildFromMnemonic(mnemonic)
+wallet.FromMnemonic(mnemonic)
 fmt.Println(wallet.GetPrivateKey())
 fmt.Println(wallet.GetPublicKey())	
 fmt.Println(wallet.GetMnemonic())
@@ -61,7 +61,7 @@ fmt.Println(wallet.GetAddress())
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
 wallet.Test = false
 mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-wallet.BuildFromMnemonicAndPath(mnemonic,"m/44'/200'/0'/0/0")
+wallet.FromMnemonicAndPath(mnemonic,"m/44'/200'/0'/0/0")
 fmt.Println(wallet.GetPrivateKey())
 fmt.Println(wallet.GetPublicKey())
 fmt.Println(wallet.GetMnemonic())
@@ -76,6 +76,6 @@ fmt.Println(wallet.GetAddress())
 wallet := BtcWallet{}// EosWallet EthWallet FileCoinWallet TronWallet OmniWallet VsysWallet
 wallet.Test = false
 mnemonic := "undo dynamic dust become chat cage pool junk sphere next rent creek"
-wallet.BuildFromMnemonicAndPath(mnemonic,"m/44'/200'/0'/0/0")
+wallet.FromMnemonicAndPath(mnemonic,"m/44'/200'/0'/0/0")
 signed:=wallet.Sign(data) //签名
 ```

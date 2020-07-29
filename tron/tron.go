@@ -37,10 +37,10 @@ func (wallet *TronWallet) Sign(data []byte) (signed []byte) {
 	return sig
 }
 
-func (wallet *TronWallet) BuildFromRandomGenerate() {
+func (wallet *TronWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
 func (wallet *TronWallet) GetPrivateKey() string {
@@ -51,7 +51,7 @@ func (wallet *TronWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *TronWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *TronWallet) FromPrivateKey(privateKey string) {
 	key, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
 		fmt.Println(err)
@@ -64,7 +64,7 @@ func (wallet *TronWallet) BuildFromPrivateKey(privateKey string) {
 	wallet.address = &address
 }
 
-func (wallet *TronWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *TronWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -89,11 +89,11 @@ func (wallet *TronWallet) GetPublicKey() string {
 	return *key
 }
 
-func (wallet *TronWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/195'/0'/0/0")
+func (wallet *TronWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/195'/0'/0/0")
 }
 
-func (wallet *TronWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *TronWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.keystore = nil
@@ -130,7 +130,7 @@ func (wallet *TronWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *TronWallet) BuildFromAddress(address string) {
+func (wallet *TronWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil

@@ -10,20 +10,20 @@ import (
 	"testing"
 )
 
-func TestCkbWallet_BuildFromRandomGenerate(t *testing.T) {
+func TestCkbWallet_FromGenerate(t *testing.T) {
 	wallet := CkbWallet{}
 	wallet.Test = false
-	wallet.BuildFromRandomGenerate()
+	wallet.FromGenerate()
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetAddress())
 }
 
-func TestCkbWallet_BuildFromPrivateKey(t *testing.T) {
+func TestCkbWallet_FromPrivateKey(t *testing.T) {
 	wallet := CkbWallet{}
 	wallet.Test = false
-	wallet.BuildFromPrivateKey("40d9cc3facc0aaeb6e4c2783d80b9fd72ac19f15f218946ab73fd8a19b54d3e6")
+	wallet.FromPrivateKey("40d9cc3facc0aaeb6e4c2783d80b9fd72ac19f15f218946ab73fd8a19b54d3e6")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -32,11 +32,11 @@ func TestCkbWallet_BuildFromPrivateKey(t *testing.T) {
 	assert.Equal(t, "ckb1qyqgmajgkkwsy6nqz4fu8axg6fg88znmjgqqxusdpg", wallet.GetAddress())
 }
 
-func TestCkbWallet_BuildFromMnemonic(t *testing.T) {
+func TestCkbWallet_FromMnemonic(t *testing.T) {
 	wallet := CkbWallet{}
 	wallet.Test = false
 	mnemonic := "paper disagree someone pioneer ball latin voyage remain add slot double loan"
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -58,11 +58,11 @@ func TestName(t *testing.T) {
 	assert.Equal(t, addr, "ckb1qyqt8xaupvm8837nv3gtc9x0ekkj64vud3jqfwyw5v")
 }
 
-func TestCkbWallet_BuildFromMnemonicAndPath(t *testing.T) {
+func TestCkbWallet_FromMnemonicAndPath(t *testing.T) {
 	wallet := CkbWallet{}
 	wallet.Test = false
 	mnemonic := "paper disagree someone pioneer ball latin voyage remain add slot double loan"
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/309'/0'/0/0")
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/309'/0'/0/0")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())
@@ -72,10 +72,10 @@ func TestCkbWallet_BuildFromMnemonicAndPath(t *testing.T) {
 	//assert.Equal(t,"ckb1qyqgmajgkkwsy6nqz4fu8axg6fg88znmjgqqxusdpg",wallet.GetAddress())
 }
 
-func TestCkbWallet_BuildFromPublicKey(t *testing.T) {
+func TestCkbWallet_FromPublicKey(t *testing.T) {
 	wallet := CkbWallet{}
 	wallet.Test = false
-	wallet.BuildFromPublicKey("020fefb65378b406c6c445ef8b34030fa75f8da25b83f1de5aa543835d9dfbf1fd")
+	wallet.FromPublicKey("020fefb65378b406c6c445ef8b34030fa75f8da25b83f1de5aa543835d9dfbf1fd")
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())
 	fmt.Println(wallet.GetMnemonic())

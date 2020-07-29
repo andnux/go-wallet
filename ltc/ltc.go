@@ -37,13 +37,13 @@ func (wallet *LtcWallet) Sign(data []byte) (signed []byte) {
 	return signature.Serialize()
 }
 
-func (wallet *LtcWallet) BuildFromRandomGenerate() {
+func (wallet *LtcWallet) FromGenerate() {
 	entropy, _ := bip39.NewEntropy(128)
 	mnemonic, _ := bip39.NewMnemonic(entropy)
-	wallet.BuildFromMnemonic(mnemonic)
+	wallet.FromMnemonic(mnemonic)
 }
 
-func (wallet *LtcWallet) BuildFromPrivateKey(privateKey string) {
+func (wallet *LtcWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -74,7 +74,7 @@ func (wallet *LtcWallet) GetPrivateKey() string {
 	return *key
 }
 
-func (wallet *LtcWallet) BuildFromPublicKey(publicKey string) {
+func (wallet *LtcWallet) FromPublicKey(publicKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -100,8 +100,8 @@ func (wallet *LtcWallet) GetPublicKey() string {
 	}
 	return *key
 }
-func (wallet *LtcWallet) BuildFromMnemonic(mnemonic string) {
-	wallet.BuildFromMnemonicAndPath(mnemonic, "m/44'/2'/0'/0/0")
+func (wallet *LtcWallet) FromMnemonic(mnemonic string) {
+	wallet.FromMnemonicAndPath(mnemonic, "m/44'/2'/0'/0/0")
 }
 
 func (wallet *LtcWallet) getParams() chaincfg.Params {
@@ -112,7 +112,7 @@ func (wallet *LtcWallet) getParams() chaincfg.Params {
 	}
 }
 
-func (wallet *LtcWallet) BuildFromMnemonicAndPath(mnemonic string, path string) {
+func (wallet *LtcWallet) FromMnemonicAndPath(mnemonic string, path string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
@@ -158,7 +158,7 @@ func (wallet *LtcWallet) GetMnemonic() string {
 	return *wallet.mnemonic
 }
 
-func (wallet *LtcWallet) BuildFromAddress(address string) {
+func (wallet *LtcWallet) FromAddress(address string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
