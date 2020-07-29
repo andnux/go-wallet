@@ -23,9 +23,12 @@ require (
 	github.com/ipfs/go-cid v0.0.5 // indirect
 	github.com/ipfs/go-ipld-cbor v0.0.4
 	github.com/ipfs/go-ipld-format v0.0.2 // indirect
+	github.com/ltcsuite/ltcd v0.20.1-beta
+	github.com/ltcsuite/ltcutil v0.0.0-20191227053721-6bec450ea6ad
 	github.com/magiconair/properties v1.8.1
 	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
-	github.com/minio/sha256-simd v0.1.1 // indirect
+	github.com/minio/sha256-simd v0.1.1
+	github.com/mr-tron/base58 v1.1.3
 	github.com/multiformats/go-varint v0.0.5
 	github.com/nervosnetwork/ckb-sdk-go v0.1.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
@@ -34,6 +37,7 @@ require (
 	github.com/schancel/cashaddr-converter v0.0.0-20181111022653-4769e7add95a
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/stretchr/testify v1.6.1
+	github.com/tendermint/crypto v0.0.0-20191022145703-50d29ede1e15
 	github.com/tendermint/go-amino v0.15.1
 	github.com/tendermint/tendermint v0.33.6
 	github.com/walkbean/vsys-sdk-go v0.0.0-20200425021120-95c96ca86edd
