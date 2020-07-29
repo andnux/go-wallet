@@ -2,6 +2,7 @@ package xrp
 
 import (
 	"encoding/hex"
+	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
 	"github.com/andnux/go-wallet"
@@ -51,17 +52,20 @@ func (wallet *XrpWallet) FromPrivateKey(hexKey string) {
 	if err != nil {
 		panic(err)
 	}
-	ecdsaKey, err := crypto.NewECDSAKey(bytes)
-	if err != nil {
-		panic(err)
-	}
-	key := hex.EncodeToString(ecdsaKey.PrivateKey.Serialize())
-	wallet.privateKey = &key
-	pukWaw := ecdsaKey.PubKey().SerializeCompressed()
-	pubicKey := hex.EncodeToString(pukWaw)
-	wallet.publicKey = &pubicKey
-	addr := wallet.publicKeyToAddress(pubicKey)
-	wallet.address = &addr
+
+	fmt.Println(hex.EncodeToString(bytes))
+	//TODO 私钥转换有问题
+	//ecdsaKey, err := crypto.NewECDSAKey(bytes)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//key := hex.EncodeToString(ecdsaKey.PrivateKey.Serialize())
+	//wallet.privateKey = &key
+	//pukWaw := ecdsaKey.PubKey().SerializeCompressed()
+	//pubicKey := hex.EncodeToString(pukWaw)
+	//wallet.publicKey = &pubicKey
+	//addr := wallet.publicKeyToAddress(pubicKey)
+	//wallet.address = &addr
 }
 
 func (wallet *XrpWallet) GetPrivateKey() string {
