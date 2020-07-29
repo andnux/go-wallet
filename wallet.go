@@ -2,9 +2,40 @@ package go_wallet
 
 import (
 	"bytes"
+	"github.com/tendermint/go-amino"
+	"github.com/tendermint/tendermint/crypto"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
+
+	cosmosCrypto "github.com/cosmos/cosmos-sdk/crypto"
+	cryptoAmino "github.com/tendermint/tendermint/crypto/encoding/amino"
 	"strconv"
 	"strings"
 )
+
+var cdc = amino.NewCodec()
+
+const (
+	privKeyAminoName = "tendermint/PrivKeySecp256k1"
+	pubKeyAminoName  = "tendermint/PubKeySecp256k1"
+)
+
+func init() {
+	RegisterAmino(cdc)
+	cryptoAmino.RegisterAmino(cdc)
+}
+func RegisterAmino(cdc *amino.Codec) {
+	cdc.RegisterConcrete(cosmosCrypto.PrivKeyLedgerSecp256k1{},
+		"tendermint/PrivKeyLedgerSecp256k1", nil)
+}
+
+func init() {
+	cdc.RegisterInterface((*crypto.PubKey)(nil), nil)
+	cdc.RegisterConcrete(secp256k1.PubKeySecp256k1{},
+		pubKeyAminoName, nil)
+	cdc.RegisterInterface((*crypto.PrivKey)(nil), nil)
+	cdc.RegisterConcrete(secp256k1.PrivKeySecp256k1{},
+		privKeyAminoName, nil)
+}
 
 type Bip44 struct {
 	M            string

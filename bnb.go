@@ -7,26 +7,8 @@ import (
 	"github.com/FactomProject/go-bip44"
 	"github.com/binance-chain/go-sdk/common/types"
 	"github.com/binance-chain/go-sdk/keys"
-	"github.com/tendermint/go-amino"
-	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
-
-var cdc = amino.NewCodec()
-
-const (
-	privKeyAminoName = "tendermint/PrivKeySecp256k1"
-	pubKeyAminoName  = "tendermint/PubKeySecp256k1"
-)
-
-func init() {
-	cdc.RegisterInterface((*crypto.PubKey)(nil), nil)
-	cdc.RegisterConcrete(secp256k1.PubKeySecp256k1{},
-		pubKeyAminoName, nil)
-	cdc.RegisterInterface((*crypto.PrivKey)(nil), nil)
-	cdc.RegisterConcrete(secp256k1.PrivKeySecp256k1{},
-		privKeyAminoName, nil)
-}
 
 type BnbWallet struct {
 	Test       bool

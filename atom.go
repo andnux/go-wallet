@@ -1,14 +1,11 @@
 package go_wallet
 
 import (
-	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
-	"github.com/gcash/bchutil/bech32"
-	"golang.org/x/crypto/ripemd160"
+	"github.com/cosmos/cosmos-sdk/types"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
 type AtomWallet struct {
@@ -23,20 +20,18 @@ func (wallet *AtomWallet) Sign(data []byte) (signed []byte) {
 	if wallet.privateKey == nil {
 		return signed
 	}
-	bytes, err := hex.DecodeString(*wallet.privateKey)
+	t, err := hex.DecodeString(*wallet.privateKey)
 	if err != nil {
 		panic(err)
 	}
-	sum := sha256.Sum256(data)
-	hash := []byte{}
-	for i, it := range sum {
-		hash[i] = it
-	}
-	sign, err := secp256k1.Sign(hash, bytes)
+	var keyBytesArray [32]byte
+	copy(keyBytesArray[:], t)
+	priKey := secp256k1.PrivKeySecp256k1(keyBytesArray)
+	signed, err = priKey.Sign(data)
 	if err != nil {
 		panic(err)
 	}
-	return sign
+	return signed
 }
 
 func (wallet *AtomWallet) BuildFromRandomGenerate() {
@@ -49,11 +44,19 @@ func (wallet *AtomWallet) BuildFromPrivateKey(hexKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = &hexKey
 	wallet.mnemonic = nil
-	bytes, err := hex.DecodeString(*wallet.privateKey)
+	t, err := hex.DecodeString(*wallet.privateKey)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(bytes)
+	var keyBytesArray [32]byte
+	copy(keyBytesArray[:], t)
+	priKey := secp256k1.PrivKeySecp256k1(keyBytesArray)
+	tmpPubKey := priKey.PubKey()
+	bytes := tmpPubKey.Bytes()
+	pubKey := hex.EncodeToString(bytes)
+	wallet.publicKey = &pubKey
+	addr := wallet.publicKeyToAddress(pubKey)
+	wallet.address = &addr
 }
 
 func (wallet *AtomWallet) GetPrivateKey() string {
@@ -69,17 +72,16 @@ func (wallet *AtomWallet) publicKeyToAddress(hexPublicKey string) string {
 	if err != nil {
 		panic(err)
 	}
-	sum := sha256.Sum256(bytes)
-	hash := make([]byte, 32)
-	for i, it := range sum {
-		hash[i] = it
+	var b [33]byte
+	for i := range b {
+		b[i] = bytes[i]
 	}
-	h := ripemd160.New()
-	hash = h.Sum(hash)
-	addr, err := bech32.Encode("cosmos", hash)
+	var ptr secp256k1.PubKeySecp256k1
+	err = cdc.UnmarshalBinaryBare(bytes, &ptr)
 	if err != nil {
 		panic(err)
 	}
+	addr := types.AccAddress(ptr.Address()).String()
 	wallet.address = &addr
 	return addr
 }
@@ -120,10 +122,16 @@ func (wallet *AtomWallet) BuildFromMnemonicAndPath(mnemonic string, path string)
 	}
 	privateKey := hex.EncodeToString(key.Key)
 	wallet.privateKey = &privateKey
-	publicKey := hex.EncodeToString(key.PublicKey().Key)
-	wallet.publicKey = &publicKey
-	addr := wallet.publicKeyToAddress(publicKey)
+	var keyBytesArray [32]byte
+	copy(keyBytesArray[:], key.Key[:32])
+	priKey := secp256k1.PrivKeySecp256k1(keyBytesArray)
+	tmpPubKey := priKey.PubKey()
+	bytes := tmpPubKey.Bytes()
+	pubKey := hex.EncodeToString(bytes)
+	wallet.publicKey = &pubKey
+	addr := wallet.publicKeyToAddress(pubKey)
 	wallet.address = &addr
+	wallet.mnemonic = &mnemonic
 }
 
 func (wallet *AtomWallet) GetMnemonic() string {
