@@ -1,4 +1,4 @@
-package go_wallet
+package ckb
 
 import (
 	"fmt"

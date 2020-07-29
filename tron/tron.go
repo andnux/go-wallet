@@ -1,10 +1,11 @@
-package go_wallet
+package tron
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/ethereum/go-ethereum/crypto"
 	tron "github.com/sasaxie/go-client-api/common/crypto"
@@ -98,7 +99,7 @@ func (wallet *TronWallet) BuildFromMnemonicAndPath(mnemonic string, path string)
 	wallet.keystore = nil
 	wallet.mnemonic = nil
 	wallet.address = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -155,7 +156,7 @@ func (wallet *TronWallet) ConvertToTAddress() string {
 	hash := sha3.New256()
 	sum = hash.Sum(bytes)
 	digest := sha3.Sum256(sum)
-	data := bytesCombine(bytes, digest[0:4])
+	data := go_wallet.BytesCombine(bytes, digest[0:4])
 	return base58.Encode(data)
 }
 

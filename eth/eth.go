@@ -1,10 +1,11 @@
-package go_wallet
+package eth
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -99,7 +100,7 @@ func (wallet *EthWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.keystore = nil
 	wallet.mnemonic = nil
 	wallet.address = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

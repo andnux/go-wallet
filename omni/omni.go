@@ -1,10 +1,11 @@
-package go_wallet
+package omni
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil"
@@ -116,7 +117,7 @@ func (wallet *OmniWallet) BuildFromMnemonicAndPath(mnemonic string, path string)
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

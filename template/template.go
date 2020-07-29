@@ -1,10 +1,11 @@
-package go_wallet
+package template
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 )
 
 type TemplateWallet struct {
@@ -85,7 +86,7 @@ func (wallet *TemplateWallet) BuildFromMnemonicAndPath(mnemonic string, path str
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		panic(err)
 	}

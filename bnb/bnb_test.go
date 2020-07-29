@@ -1,4 +1,4 @@
-package go_wallet
+package bnb
 
 import (
 	"fmt"

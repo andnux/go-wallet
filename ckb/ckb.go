@@ -1,10 +1,11 @@
-package go_wallet
+package ckb
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/nervosnetwork/ckb-sdk-go/address"
 	"github.com/nervosnetwork/ckb-sdk-go/crypto/blake2b"
 	"github.com/nervosnetwork/ckb-sdk-go/crypto/secp256k1"
@@ -124,7 +125,7 @@ func (wallet *CkbWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

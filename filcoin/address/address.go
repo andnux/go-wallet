@@ -64,7 +64,7 @@ const (
 	// BLS represents the address BLS protocol.
 	BLS
 
-	Unknown = Protocol(255)
+	Unknown = Protocol(120)
 )
 
 // Protocol returns the protocol used by the address.

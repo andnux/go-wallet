@@ -1,10 +1,11 @@
-package go_wallet
+package bnb
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/binance-chain/go-sdk/common/types"
 	"github.com/binance-chain/go-sdk/keys"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
@@ -70,7 +71,7 @@ func (wallet *BnbWallet) BuildFromPublicKey(publicKey string) {
 		fmt.Println(err)
 	}
 	var ptr secp256k1.PubKeySecp256k1
-	err = cdc.UnmarshalBinaryBare(pubKey, &ptr)
+	err = go_wallet.MainCodec.UnmarshalBinaryBare(pubKey, &ptr)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +94,7 @@ func (wallet *BnbWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

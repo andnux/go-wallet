@@ -1,9 +1,10 @@
-package go_wallet
+package eos
 
 import (
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/eoscanada/eos-go/ecc"
 )
 
@@ -82,7 +83,7 @@ func (wallet *EosWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

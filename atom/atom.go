@@ -1,9 +1,10 @@
-package go_wallet
+package atom
 
 import (
 	"encoding/hex"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
@@ -77,7 +78,7 @@ func (wallet *AtomWallet) publicKeyToAddress(hexPublicKey string) string {
 		b[i] = bytes[i]
 	}
 	var ptr secp256k1.PubKeySecp256k1
-	err = cdc.UnmarshalBinaryBare(bytes, &ptr)
+	err = go_wallet.MainCodec.UnmarshalBinaryBare(bytes, &ptr)
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +111,7 @@ func (wallet *AtomWallet) BuildFromMnemonicAndPath(mnemonic string, path string)
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		panic(err)
 	}

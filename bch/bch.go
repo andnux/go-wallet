@@ -1,10 +1,11 @@
-package go_wallet
+package bch
 
 import (
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/gcash/bchd/bchec"
 	"github.com/gcash/bchd/chaincfg"
 	"github.com/gcash/bchutil"
@@ -137,7 +138,7 @@ func (wallet *BchWallet) BuildFromMnemonicAndPath(mnemonic string, path string) 
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		panic(err)
 	}

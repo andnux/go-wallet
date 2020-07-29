@@ -1,4 +1,4 @@
-package go_wallet
+package atom
 
 import (
 	"encoding/hex"

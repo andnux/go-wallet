@@ -5,14 +5,11 @@ import (
 	"github.com/tendermint/go-amino"
 	"github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
-
-	cosmosCrypto "github.com/cosmos/cosmos-sdk/crypto"
-	cryptoAmino "github.com/tendermint/tendermint/crypto/encoding/amino"
 	"strconv"
 	"strings"
 )
 
-var cdc = amino.NewCodec()
+var MainCodec = amino.NewCodec()
 
 const (
 	privKeyAminoName = "tendermint/PrivKeySecp256k1"
@@ -20,21 +17,11 @@ const (
 )
 
 func init() {
-	RegisterAmino(cdc)
-	cryptoAmino.RegisterAmino(cdc)
-}
-func RegisterAmino(cdc *amino.Codec) {
-	cdc.RegisterConcrete(cosmosCrypto.PrivKeyLedgerSecp256k1{},
-		"tendermint/PrivKeyLedgerSecp256k1", nil)
-}
-
-func init() {
-	cdc.RegisterInterface((*crypto.PubKey)(nil), nil)
-	cdc.RegisterConcrete(secp256k1.PubKeySecp256k1{},
-		pubKeyAminoName, nil)
-	cdc.RegisterInterface((*crypto.PrivKey)(nil), nil)
-	cdc.RegisterConcrete(secp256k1.PrivKeySecp256k1{},
+	MainCodec.RegisterInterface((*crypto.PubKey)(nil), nil)
+	MainCodec.RegisterConcrete(secp256k1.PrivKeySecp256k1{},
 		privKeyAminoName, nil)
+	MainCodec.RegisterConcrete(secp256k1.PubKeySecp256k1{},
+		pubKeyAminoName, nil)
 }
 
 type Bip44 struct {
@@ -46,7 +33,7 @@ type Bip44 struct {
 	AddressIndex uint32
 }
 
-func stringToUint32(str string) uint32 {
+func StringToUint32(str string) uint32 {
 	num, err := strconv.ParseUint(str, 10, 32)
 	if err != nil {
 		panic(err)
@@ -54,7 +41,7 @@ func stringToUint32(str string) uint32 {
 	return uint32(num)
 }
 
-func bip44Parser(path string) (bip44 Bip44, err error) {
+func Bip44Parser(path string) (bip44 Bip44, err error) {
 	s := strings.Split(path, "/")
 	if len(s) != 6 {
 		panic("path error")
@@ -64,29 +51,29 @@ func bip44Parser(path string) (bip44 Bip44, err error) {
 	bip44.M = s[0]
 	bip44.Purpose = strings.ReplaceAll(s[1], "'", "")
 	if strings.Contains(s[2], "'") {
-		bip44.CoinType = stringToUint32(strings.ReplaceAll(s[2], "'", "")) | 0x80000000
+		bip44.CoinType = StringToUint32(strings.ReplaceAll(s[2], "'", "")) | 0x80000000
 	} else {
-		bip44.CoinType = stringToUint32(strings.ReplaceAll(s[2], "'", ""))
+		bip44.CoinType = StringToUint32(strings.ReplaceAll(s[2], "'", ""))
 	}
 	if strings.Contains(s[3], "'") {
-		bip44.Account = stringToUint32(strings.ReplaceAll(s[3], "'", "")) | 0x80000000
+		bip44.Account = StringToUint32(strings.ReplaceAll(s[3], "'", "")) | 0x80000000
 	} else {
-		bip44.Account = stringToUint32(strings.ReplaceAll(s[3], "'", ""))
+		bip44.Account = StringToUint32(strings.ReplaceAll(s[3], "'", ""))
 	}
 	if strings.Contains(s[4], "'") {
-		bip44.Change = stringToUint32(strings.ReplaceAll(s[4], "'", "")) | 0x80000000
+		bip44.Change = StringToUint32(strings.ReplaceAll(s[4], "'", "")) | 0x80000000
 	} else {
-		bip44.Change = stringToUint32(strings.ReplaceAll(s[4], "'", ""))
+		bip44.Change = StringToUint32(strings.ReplaceAll(s[4], "'", ""))
 	}
 	if strings.Contains(s[5], "'") {
-		bip44.AddressIndex = stringToUint32(strings.ReplaceAll(s[5], "'", "")) | 0x80000000
+		bip44.AddressIndex = StringToUint32(strings.ReplaceAll(s[5], "'", "")) | 0x80000000
 	} else {
-		bip44.AddressIndex = stringToUint32(strings.ReplaceAll(s[5], "'", ""))
+		bip44.AddressIndex = StringToUint32(strings.ReplaceAll(s[5], "'", ""))
 	}
 	return bip44, nil
 }
 
-func bytesCombine(pBytes ...[]byte) []byte {
+func BytesCombine(pBytes ...[]byte) []byte {
 	length := len(pBytes)
 	s := make([][]byte, length)
 	for index := 0; index < length; index++ {
@@ -96,6 +83,7 @@ func bytesCombine(pBytes ...[]byte) []byte {
 	return bytes.Join(s, sep)
 }
 
+//下面代码IOS编译不过，暂时去掉
 //type WalletSignature interface {
 //	Sign(data []byte) (signed []byte)
 //}

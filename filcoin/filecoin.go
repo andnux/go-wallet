@@ -1,10 +1,11 @@
-package go_wallet
+package filcoin
 
 import (
 	"encoding/hex"
 	"fmt"
 	"github.com/FactomProject/go-bip39"
 	"github.com/FactomProject/go-bip44"
+	"github.com/andnux/go-wallet"
 	"github.com/andnux/go-wallet/filcoin/address"
 	"github.com/andnux/go-wallet/filcoin/crypto"
 )
@@ -116,7 +117,7 @@ func (wallet *FileCoinWallet) BuildFromMnemonicAndPath(mnemonic string, path str
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	parser, err := bip44Parser(path)
+	parser, err := go_wallet.Bip44Parser(path)
 	if err != nil {
 		fmt.Println(err)
 	}

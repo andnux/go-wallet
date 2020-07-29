@@ -1,4 +1,4 @@
-package go_wallet
+package eth
 
 import (
 	"fmt"

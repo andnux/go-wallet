@@ -1,4 +1,4 @@
-package go_wallet
+package eos
 
 import (
 	"fmt"
