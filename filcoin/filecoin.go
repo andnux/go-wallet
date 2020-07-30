@@ -65,7 +65,7 @@ func (wallet *FileCoinWallet) FromPrivateKey(privateKey string) {
 		network = address.Mainnet
 	}
 	wallet.privateKey = &privateKey
-	sss := hex.EncodeToString(publicKey)
+	sss := base64url.Encode(publicKey)
 	wallet.publicKey = &sss
 	addr := k1Address.String(network)
 	wallet.address = &addr
