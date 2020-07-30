@@ -152,7 +152,7 @@ func (wallet *FileCoinWallet) FromMnemonicAndPath(mnemonic string, path string) 
 	}
 	privateKey := base64url.Encode(key.Key)
 	wallet.privateKey = &privateKey
-	hexPuk := hex.EncodeToString(publicKey)
+	hexPuk := base64url.Encode(publicKey)
 	wallet.publicKey = &hexPuk
 	addr := k1Address.String(network)
 	wallet.address = &addr
