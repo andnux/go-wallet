@@ -21,8 +21,8 @@ func TestFileCoinWallet_FromGenerate(t *testing.T) {
 
 func TestFileCoinWallet_FromPrivateKey(t *testing.T) {
 	wallet := FileCoinWallet{}
-	wallet.Test = false
-	wallet.FromPrivateKey("c7d32f2f0d1b770ff183e56562cd839e9bceeb119ef8e7485e3b0e0de17078f7")
+	wallet.Test = true
+	wallet.FromPrivateKey("tgsLRYpUM2QL8iMyI28C5exBbyPzJTfPGkPXAbCpuPg=")
 	fmt.Println(wallet.GetMnemonic())
 	fmt.Println(wallet.GetPrivateKey())
 	fmt.Println(wallet.GetPublicKey())

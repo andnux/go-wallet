@@ -8,6 +8,7 @@ import (
 	"github.com/andnux/go-wallet"
 	"github.com/andnux/go-wallet/filcoin/address"
 	"github.com/andnux/go-wallet/filcoin/crypto"
+	"github.com/dvsekhvalnov/jose2go/base64url"
 )
 
 type FileCoinWallet struct {
@@ -44,9 +45,13 @@ func (wallet *FileCoinWallet) FromPrivateKey(privateKey string) {
 	wallet.publicKey = nil
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
-	keyHex, err := hex.DecodeString(privateKey)
+	keyHex, err := base64url.Decode(privateKey)
 	if err != nil {
-		fmt.Println(err)
+		keyHex, err = base64url.Decode(privateKey)
+		if err != nil {
+			panic(err)
+		}
+
 	}
 	publicKey := crypto.PublicKey(keyHex)
 	k1Address, err := address.NewSecp256k1Address(publicKey)
@@ -79,6 +84,13 @@ func (wallet *FileCoinWallet) FromPublicKey(publicKey string) {
 	wallet.privateKey = nil
 	wallet.mnemonic = nil
 	bytes, err := hex.DecodeString(publicKey)
+	if err != nil {
+		bytes, err = base64url.Decode(publicKey)
+		if err != nil {
+			panic(err)
+		}
+
+	}
 	k1Address, err := address.NewSecp256k1Address(bytes)
 	if err != nil {
 		fmt.Println(err)
@@ -138,7 +150,7 @@ func (wallet *FileCoinWallet) FromMnemonicAndPath(mnemonic string, path string) 
 	} else {
 		network = address.Mainnet
 	}
-	privateKey := hex.EncodeToString(key.Key)
+	privateKey := base64url.Encode(key.Key)
 	wallet.privateKey = &privateKey
 	hexPuk := hex.EncodeToString(publicKey)
 	wallet.publicKey = &hexPuk
